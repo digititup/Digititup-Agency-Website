@@ -2088,6 +2088,15 @@
       document.body.style.overflow = mobileDrawer.classList.contains('open') ? 'hidden' : '';
     });
 
+    const drawerCloseBtn = document.getElementById('mobileDrawerClose');
+    if (drawerCloseBtn) {
+      drawerCloseBtn.addEventListener('click', function () {
+        menuToggle.classList.remove('open');
+        mobileDrawer.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    }
+
     drawerLinks.forEach(function (link) {
       link.addEventListener('click', function () {
         menuToggle.classList.remove('open');

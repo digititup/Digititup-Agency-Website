@@ -29,21 +29,7 @@
   window.addEventListener('scroll', handleScroll, { passive: true });
   handleScroll();
 
-  if (menuToggle && mobileDrawer) {
-    menuToggle.addEventListener('click', () => {
-      menuToggle.classList.toggle('open');
-      mobileDrawer.classList.toggle('open');
-      document.body.style.overflow = mobileDrawer.classList.contains('open') ? 'hidden' : '';
-    });
-
-    drawerLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        menuToggle.classList.remove('open');
-        mobileDrawer.classList.remove('open');
-        document.body.style.overflow = '';
-      });
-    });
-  }
+  // Mobile drawer listener handled at bottom of main.js
 
   /* ==========================================================================
      2. Active Navigation Spy on Scroll
@@ -471,4 +457,196 @@ _Sent via digititup.com careers portal_`;
     });
   });
 
+})();
+
+/* ==========================================================================
+   INTERACTIVE HERO STUDIO COCKPIT TERMINAL & COMPOUND SLIDER
+   ========================================================================== */
+(function() {
+  const cockpitTabs = document.querySelectorAll('.cockpit-tab');
+  const cBadge = document.getElementById('cBadge');
+  const cKpiPill = document.getElementById('cKpiPill');
+  const cVentureTitle = document.getElementById('cVentureTitle');
+  const cVentureDesc = document.getElementById('cVentureDesc');
+  const cmVal1 = document.getElementById('cmVal1');
+  const cmLbl1 = document.getElementById('cmLbl1');
+  const cmVal2 = document.getElementById('cmVal2');
+  const cmLbl2 = document.getElementById('cmLbl2');
+  const cmVal3 = document.getElementById('cmVal3');
+  const cmLbl3 = document.getElementById('cmLbl3');
+  const cActionBtn = document.getElementById('cActionBtn');
+  const cActionText = document.getElementById('cActionText');
+  const cActionNote = document.getElementById('cActionNote');
+  const cockpitTerminal = document.getElementById('cockpitTerminal');
+
+  const ventureData = {
+    media: {
+      badge: '★ HIGH-RETENTION PRODUCTION',
+      badgeColor: '#ff4d4d',
+      kpi: '5M+ Organic Views',
+      title: 'Digititup Media',
+      desc: 'Viral investigative explainers, documentary filmmaking, and commercial narrative engines engineered for maximum watch retention.',
+      metrics: [
+        { val: '5,000,000+', lbl: 'Views' },
+        { val: '70%+', lbl: 'Avg Retention' },
+        { val: 'Zero', lbl: 'Ad Spend / CAC' }
+      ],
+      link: 'https://media.digititup.com',
+      linkText: 'Explore media.digititup.com',
+      note: 'Verified YouTube & Reel Engine',
+      glow: 'rgba(255, 42, 42, 0.28)'
+    },
+    academy: {
+      badge: '★ APPLIED AI ACADEMY',
+      badgeColor: '#38bdf8',
+      kpi: '1,000+ Students',
+      title: 'Digititup Academy',
+      desc: 'Practical, cohort-based masterclasses teaching Generative AI, LLM automation workflows, and high-income digital creator skills.',
+      metrics: [
+        { val: '1,000+', lbl: 'Enrolled' },
+        { val: '4.9 / 5', lbl: 'Student Score' },
+        { val: '100%', lbl: 'Practical Labs' }
+      ],
+      link: 'https://academy.pratiktharu.com.np',
+      linkText: 'Visit academy.pratiktharu.com.np',
+      note: 'Cohort AI Masterclasses',
+      glow: 'rgba(56, 189, 248, 0.28)'
+    },
+    tech: {
+      badge: '★ ENTERPRISE AI ARCHITECTURE',
+      badgeColor: '#21d800',
+      kpi: '99.9% Uptime',
+      title: 'Digititup Tech',
+      desc: 'Full-stack web applications, bespoke business process automation, and autonomous AI agents built with engineering discipline.',
+      metrics: [
+        { val: '99.9%', lbl: 'System Uptime' },
+        { val: '10x', lbl: 'Dev Velocity' },
+        { val: 'Zero', lbl: 'Legacy Bloat' }
+      ],
+      link: '#work-with-us',
+      linkText: 'Build With Tech Solutions',
+      note: 'Enterprise Software & Cloud',
+      glow: 'rgba(33, 216, 0, 0.28)'
+    },
+    unicorns: {
+      badge: '★ GLOBAL DATA INTELLIGENCE',
+      badgeColor: '#e5c07b',
+      kpi: '1,404 Live Unicorns',
+      title: 'Global Unicorns 3D',
+      desc: 'Interactive 3D WebGL globe mapping every $1B+ tech unicorn worldwide, complete with financial valuation and city-level geocoding.',
+      metrics: [
+        { val: '1,404', lbl: 'Billion $ Techs' },
+        { val: '$7.05T', lbl: 'Total Valued' },
+        { val: '53', lbl: 'Nations Mapped' }
+      ],
+      link: 'unicorns.html',
+      linkText: 'Launch 3D Earth Globe 🌍',
+      note: 'Live CB Insights Telemetry',
+      glow: 'rgba(229, 192, 123, 0.32)'
+    }
+  };
+
+  if (cockpitTabs && cockpitTabs.length) {
+    cockpitTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        cockpitTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const key = tab.dataset.venture;
+        const data = ventureData[key];
+        if (!data) return;
+
+        if (cBadge) { cBadge.textContent = data.badge; cBadge.style.color = data.badgeColor; }
+        if (cKpiPill) cKpiPill.textContent = data.kpi;
+        if (cVentureTitle) cVentureTitle.textContent = data.title;
+        if (cVentureDesc) cVentureDesc.textContent = data.desc;
+
+        if (cmVal1) { cmVal1.textContent = data.metrics[0].val; cmVal1.style.color = data.badgeColor; }
+        if (cmLbl1) cmLbl1.textContent = data.metrics[0].lbl;
+        if (cmVal2) { cmVal2.textContent = data.metrics[1].val; cmVal2.style.color = data.badgeColor; }
+        if (cmLbl2) cmLbl2.textContent = data.metrics[1].lbl;
+        if (cmVal3) { cmVal3.textContent = data.metrics[2].val; cmVal3.style.color = data.badgeColor; }
+        if (cmLbl3) cmLbl3.textContent = data.metrics[2].lbl;
+
+        if (cActionBtn) {
+          cActionBtn.href = data.link;
+          if (cActionText) cActionText.textContent = data.linkText;
+        }
+        if (cActionNote) cActionNote.textContent = data.note;
+
+        if (cockpitTerminal) {
+          cockpitTerminal.style.boxShadow = `0 30px 90px rgba(0, 0, 0, 0.85), 0 0 50px ${data.glow}`;
+          cockpitTerminal.style.borderColor = data.badgeColor + '55';
+        }
+      });
+    });
+  }
+
+  // Compound Simulator Slider
+  const compoundSlider = document.getElementById('compoundSlider');
+  const compoundOutput = document.getElementById('compoundOutput');
+  if (compoundSlider && compoundOutput) {
+    const projection = {
+      '1': 'Year 1: 5.2M Views · $180K Value',
+      '2': 'Year 2: 12.8M Views · $420K Value',
+      '3': 'Year 3: 28.5M Views · $1.1M Value',
+      '4': 'Year 4: 55.0M Views · $2.8M Value',
+      '5': 'Year 5: 110M+ Views · $6.5M+ (Moonshot)'
+    };
+    compoundSlider.addEventListener('input', (e) => {
+      compoundOutput.textContent = projection[e.target.value] || 'Active';
+    });
+  }
+
+  // Enhanced Mobile Menu Trigger
+  const menuToggles = document.querySelectorAll('.menu-toggle, #menuToggle, .burger-btn');
+  const mobileDrawer = document.getElementById('mobileDrawer');
+  const drawerCloseBtn = document.getElementById('mobileDrawerClose');
+  const drawerLinks = document.querySelectorAll('.drawer-link, .mobile-nav-item');
+
+  function openDrawer() {
+    if (mobileDrawer) {
+      mobileDrawer.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+  }
+
+  function closeDrawer() {
+    if (mobileDrawer) {
+      mobileDrawer.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+
+  menuToggles.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (mobileDrawer && mobileDrawer.classList.contains('open')) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
+    });
+  });
+
+  if (drawerCloseBtn) {
+    drawerCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeDrawer();
+    });
+  }
+
+  drawerLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeDrawer();
+    });
+  });
+
+  if (mobileDrawer) {
+    mobileDrawer.addEventListener('click', (e) => {
+      if (e.target === mobileDrawer) {
+        closeDrawer();
+      }
+    });
+  }
 })();

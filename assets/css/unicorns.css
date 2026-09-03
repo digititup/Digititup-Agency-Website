@@ -31,7 +31,7 @@
   cursor: grabbing;
 }
 
-/* Header Override for Unicorns Page: Full Transparent */
+/* Header Override for Unicorns Page: Floating Glass Capsule (Reference: media.digititup.com) */
 .unicorns-body .site-header,
 .unicorns-body .site-header.scrolled,
 .unicorns-header {
@@ -42,17 +42,22 @@
   border-color: transparent !important;
   box-shadow: none !important;
   position: fixed;
-  top: 0;
+  top: 18px;
   left: 0;
+  right: 0;
   width: 100%;
-  height: var(--header-height);
-  z-index: 100;
+  z-index: 1000;
+  pointer-events: none;
 }
 
-/* Floating HUD & Top Controls */
+.unicorns-body .site-header.scrolled {
+  top: 12px;
+}
+
+/* Floating HUD & Top Controls (Positioned Below Floating Glass Capsule) */
 .unicorns-hud {
   position: fixed;
-  top: calc(var(--header-height) + 16px);
+  top: 96px;
   left: 24px;
   right: 24px;
   z-index: 20;

@@ -21,13 +21,13 @@
   <link rel="apple-touch-icon" href="assets/img/icon.png">
   <meta name="theme-color" content="#07090b">
 
-  <!-- Google Fonts: EB Garamond (Apple Garamond web alternative) & Plus Jakarta Sans -->
+  <!-- Google Fonts: Instrument Serif, Plus Jakarta Sans & EB Garamond -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
 
   <!-- Project Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css?v=5.0">
 
   <!-- Schema.org Organization Structured Data -->
   <script type="application/ld+json">
@@ -64,202 +64,448 @@
     <div class="glow-orb glow-3"></div>
   </div>
 
-  <!-- ================= HEADER ================= -->
+  <!-- Ambient Background Decor & Grid (From media.digititup.com) -->
+  <div class="bg-decor" aria-hidden="true">
+    <div class="bg-grid"></div>
+  </div>
+
+  <!-- ================= FLOATING TRANSPARENT GLASS CAPSULE HEADER ================= -->
   <header class="site-header">
-    <div class="container header-inner">
+    <div class="wrap nav-bar">
+      <!-- Official Brand Logo -->
       <a href="#home" class="brand-logo" aria-label="Digititup Agency Home">
-        <img src="assets/img/logo.png" alt="Digititup Agency Logo" class="logo-full" width="210" height="42">
-        <img src="assets/img/icon.png" alt="Digititup Logo Icon" class="logo-icon" width="38" height="38">
+        <img src="assets/img/logo.png" alt="Digititup Agency Logo" class="logo-img" />
       </a>
 
-      <nav class="nav-container" aria-label="Primary Navigation">
-        <ul class="nav-menu">
+      <!-- Desktop Links -->
+      <nav class="nav-container" aria-label="Main Navigation">
+        <ul class="nav-links">
           <li><a href="#home" class="nav-link active">Home</a></li>
-          <li><a href="unicorns.html" class="nav-link">Unicorns</a></li>
-          <li><a href="#ventures" class="nav-link">Media</a></li>
+          <li><a href="unicorns.html" class="nav-link">Unicorns 3D</a></li>
+          <li><a href="#ventures" class="nav-link">Ventures</a></li>
+          <li><a href="#fields" class="nav-link">Fields</a></li>
           <li><a href="#academy" class="nav-link">Academy</a></li>
           <li><a href="#founder" class="nav-link">Founder</a></li>
           <li><a href="#work-with-us" class="nav-link">Work With Us</a></li>
         </ul>
       </nav>
 
-      <div class="header-actions">
-        <a href="#work-with-us" class="btn btn-outline btn-sm header-cta">Invest on Venture →</a>
-        <button class="menu-toggle" aria-label="Toggle navigation drawer" aria-expanded="false">
-          <span></span>
-          <span></span>
-          <span></span>
+      <!-- CTA & Mobile Burger -->
+      <div class="nav-actions">
+        <a href="#work-with-us" class="btn btn-primary btn-sm nav-cta-btn">
+          <span>Invest on Venture</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+
+        <!-- Mobile Burger Button -->
+        <button class="burger-btn menu-toggle" id="menuToggle" aria-label="Toggle navigation menu" type="button">
+          <div class="burger-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile Drawer -->
-  <aside class="mobile-drawer" aria-label="Mobile Navigation Menu">
-    <div class="drawer-header">
-      <img src="assets/img/logo.png" alt="Digititup Agency Logo" style="height:32px; width:auto;">
-    </div>
-    <ul class="drawer-links">
-      <li><a href="#home" class="drawer-link">Home</a></li>
-      <li><a href="unicorns.html" class="drawer-link">Unicorns</a></li>
-      <li><a href="#ventures" class="drawer-link">Our Ventures</a></li>
-      <li><a href="#media" class="drawer-link">Digititup Media</a></li>
-      <li><a href="#academy" class="drawer-link">Digititup Academy</a></li>
-      <li><a href="#tech" class="drawer-link">Digititup Tech</a></li>
-      <li><a href="#founder" class="drawer-link">Founder & Leadership</a></li>
-      <li><a href="#work-with-us" class="drawer-link">Work With Us</a></li>
-    </ul>
-    <div class="drawer-footer">
-      <a href="#work-with-us" class="btn btn-primary" style="width:100%">Partner / Invest Now →</a>
-      <p style="font-size:12px; color:var(--text-muted); text-align:center;">digititup@gmail.com • +977 9812414094</p>
-    </div>
-  </aside>
+  <!-- ================= LUXURY MINIMAL MOBILE DRAWER ================= -->
+  <div class="mobile-drawer" id="mobileDrawer" aria-label="Mobile navigation menu" aria-hidden="true">
+    <div class="mobile-drawer-bg-glow"></div>
 
-  <!-- ================= HERO SECTION (#home) ================= -->
-  <section class="hero-section" id="home">
-    <div class="hero-bg-wrapper">
-      <video class="hero-video" autoplay muted loop playsinline poster="assets/img/icon.png">
-        <source src="assets/video/hero.mp4" type="video/mp4">
-      </video>
-      <canvas id="heroCanvas" class="hero-canvas"></canvas>
-      <div class="hero-overlay"></div>
+    <!-- Drawer Top Bar -->
+    <div class="mobile-drawer-top">
+      <a href="#home" class="brand-logo mobile-drawer-logo" aria-label="Digititup Agency Home">
+        <img src="assets/img/logo.png" alt="DigitItUp Agency Logo" class="logo-img" />
+      </a>
+      <button class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close navigation menu" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
 
-    <div class="container hero-content">
-      <div class="hero-badge reveal">
-        <span class="badge-dot"></span>
-        <span>Digititup Agency Pvt. Ltd. • High-Velocity Venture Studio</span>
-      </div>
+    <!-- Minimal Clean Navigation Links -->
+    <nav class="mobile-nav-wrap">
+      <ul class="mobile-minimal-menu">
+        <li>
+          <a href="#home" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num">01</span>
+            <span class="m-nav-label">Home</span>
+            <span class="m-nav-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+          </a>
+        </li>
+        <li>
+          <a href="unicorns.html" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num" style="color:var(--green);">02</span>
+            <span class="m-nav-label">Unicorns 3D Earth</span>
+            <span class="m-nav-tag" style="background:rgba(33,216,0,0.15);color:var(--green);border:1px solid rgba(33,216,0,0.3);">1,404 Live</span>
+          </a>
+        </li>
+        <li>
+          <a href="#ventures" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num">03</span>
+            <span class="m-nav-label">Our Ventures</span>
+            <span class="m-nav-tag">Media &amp; Tech</span>
+          </a>
+        </li>
+        <li>
+          <a href="#fields" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num">04</span>
+            <span class="m-nav-label">Fields We Build</span>
+            <span class="m-nav-tag">6 Verticals</span>
+          </a>
+        </li>
+        <li>
+          <a href="#academy" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num">05</span>
+            <span class="m-nav-label">Digititup Academy</span>
+            <span class="m-nav-tag">1,000+ Students</span>
+          </a>
+        </li>
+        <li>
+          <a href="#founder" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num" style="color:var(--gold);">06</span>
+            <span class="m-nav-label">Founder</span>
+            <span class="m-nav-tag" style="color:var(--gold);">Executive</span>
+          </a>
+        </li>
+        <li>
+          <a href="#work-with-us" class="mobile-nav-item drawer-link">
+            <span class="m-nav-num">07</span>
+            <span class="m-nav-label">Partner &amp; Invest</span>
+            <span class="m-nav-tag">Institutional</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
 
-      <h1 class="hero-title reveal reveal-delay-1">
-        Building Category-Defining <span class="highlight-word">Digital Ventures</span> That <span class="text-gradient">Compound</span>.
-      </h1>
-
-      <p class="hero-subtitle reveal reveal-delay-2">
-        We engineer, scale, and invest in <span class="text-white-em">high-margin media engines</span>, <span class="text-white-em">intelligent software systems</span>, and <span class="text-white-em">educational platforms</span>. Designed for <span class="highlight-pill">Zero-CAC Reach</span> and <span class="highlight-pill">Superior Capital Efficiency</span>.
-      </p>
-
-      <div class="hero-actions reveal reveal-delay-3">
-        <a href="#ventures" class="btn btn-primary btn-lg">Explore Our Ventures ↓</a>
-        <a href="unicorns.html" class="btn btn-ghost btn-lg" aria-label="Explore Unicorns in the World">
-          <span style="font-size:18px;">🦄</span> Explore Unicorns in the World
-        </a>
-      </div>
-
-      <!-- Trust Ribbon Under Hero -->
-      <div class="hero-trust reveal reveal-delay-4">
-        <div class="trust-item">
-          <span class="trust-icon">✓</span>
-          <span>4+ Years Proven Execution</span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">✓</span>
-          <span><span class="highlight-mark">IOE Pulchowk</span> Engineering Standards</span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">✓</span>
-          <span><span class="highlight-mark">5M+</span> Cumulative Organic Impressions</span>
-        </div>
-        <div class="trust-item">
-          <span class="trust-icon">✓</span>
-          <span><span class="highlight-mark">Zero-CAC</span> Distribution Moat</span>
-        </div>
-      </div>
+    <!-- Quick VIP WhatsApp CTA -->
+    <div class="mobile-drawer-cta">
+      <a href="https://wa.me/9779812414094?text=Hi%20Digititup%20Agency!%20I%20would%20like%20to%20connect%20for%20a%20VIP%20Partnership%20or%20Investment." target="_blank" rel="noopener" class="btn btn-vip-primary btn-lg mobile-cta-btn">
+        <span>Connect on WhatsApp VIP</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
-  </section>
 
-  <!-- ================= METRICS & TICKER STRIP ================= -->
-  <section class="metrics-section">
+    <!-- Direct Connect -->
+    <div class="mobile-drawer-social">
+      <div class="mobile-social-title">Official Venture Inquiries</div>
+      <p style="font-size:12.5px;color:var(--ink-2);margin-bottom:8px;">digititup@gmail.com • +977 9812414094</p>
+    </div>
+  </div>
+
+  <!-- ================= HERO SECTION (#home) - 2-COLUMN VIP (Reference: media.digititup.com) ================= -->
+  <section class="sec hero-sec hero-vip-sec" id="home">
+    <!-- Ambient Floating Luxury Glow Orbs & Visual Mesh Shapes -->
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
+    <div class="ambient-orb ambient-orb-3"></div>
+    <div class="hero-shape hero-shape-orbital"></div>
+    <div class="hero-shape hero-shape-prism"></div>
+
     <div class="container">
-      <div class="metrics-grid reveal">
+      <div class="hero-grid">
         
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="stat-counter highlight-word" data-target="5" data-suffix="+">5+</span>
+        <!-- Left Column: Copy & Value Proposition -->
+        <div class="hero-copy">
+          <div class="hero-pill-badge hero-vip-pill reveal">
+            <span class="pill-glow-vip"></span>
+            <span class="pill-vip-text">★ HIGH-VELOCITY VENTURE STUDIO · DIGITITUP AGENCY PVT. LTD.</span>
           </div>
-          <div class="metric-label">Running Ventures</div>
-        </div>
 
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="stat-counter highlight-word" data-target="6" data-suffix="+">6+</span>
+          <h1 class="hero-title hero-vip-headline reveal reveal-delay-1" style="font-size:clamp(36px, 4.2vw, 56px);line-height:1.12;">
+            Building Category-Defining <br>
+            <span class="text-vip-gradient">Digital Ventures That</span> <span class="serif-italic-vip">Compound.</span>
+          </h1>
+
+          <p class="hero-subtitle reveal reveal-delay-2" style="font-size:16.5px;color:var(--ink-2);line-height:1.65;max-width:580px;">
+            We engineer, scale, and invest in <span class="text-white-em">high-margin media engines</span>, <span class="text-white-em">intelligent software systems</span>, and <span class="text-white-em">educational platforms</span>. Designed for <span class="highlight-pill">Zero-CAC Reach</span> and <span class="highlight-pill">Superior Capital Efficiency</span>.
+          </p>
+
+          <div class="hero-ctas reveal reveal-delay-3">
+            <a href="#ventures" class="btn btn-vip-primary btn-lg">
+              <span>Explore Our Ventures</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <a href="unicorns.html" class="btn btn-glass-vip btn-lg" aria-label="Explore Unicorns 3D Earth">
+              <span>🦄 Explore Unicorns 3D</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
           </div>
-          <div class="metric-label">Dedicated Team</div>
-        </div>
 
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="stat-counter highlight-word" data-target="4" data-suffix="+">4+</span>
+          <!-- Glass Hero Stats Row -->
+          <div class="hero-vip-stats reveal reveal-delay-4" style="margin-top:14px;">
+            <div class="stat-glass-card">
+              <div class="stat-val">5<span>M+</span></div>
+              <div class="stat-lbl">Views Generated</div>
+            </div>
+            <div class="stat-glass-card">
+              <div class="stat-val">4<span>+ Yrs</span></div>
+              <div class="stat-lbl">Execution Track</div>
+            </div>
+            <div class="stat-glass-card">
+              <div class="stat-val">Zero<span>-CAC</span></div>
+              <div class="stat-lbl">Distribution Moat</div>
+            </div>
+            <div class="stat-glass-card">
+              <div class="stat-val">1,404</div>
+              <div class="stat-lbl">Global Unicorns</div>
+            </div>
           </div>
-          <div class="metric-label">Years Experience</div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="accent">#</span><span class="stat-counter highlight-word" data-target="1">1</span>
+        <!-- Right Column: Interactive Venture Terminal / Live Cockpit -->
+        <div class="hero-visual reveal reveal-delay-2" id="heroVisualStage">
+          <div class="venture-cockpit-anchor" id="cockpitAnchor">
+            
+            <!-- Floating Depth Badges -->
+            <div class="float-badge float-badge-1" id="cockpitBadge1">
+              <div class="float-badge-pulse"></div>
+              <div>
+                <div class="badge-sub">Compound Distribution</div>
+                <div class="badge-main">Zero-CAC Organic Moat</div>
+              </div>
+            </div>
+
+            <div class="float-badge float-badge-2" id="cockpitBadge2">
+              <span class="badge-star">★</span>
+              <div>
+                <div class="badge-sub gold-sub">Venture Studio Radar</div>
+                <div class="badge-main">1,404 Live Unicorns Indexed</div>
+              </div>
+            </div>
+
+            <!-- Titanium Glass Terminal Card -->
+            <div class="cockpit-terminal-card" id="cockpitTerminal">
+              <div class="cockpit-glass-sheen"></div>
+              
+              <!-- Cockpit Top Bar -->
+              <div class="cockpit-top-bar">
+                <div class="cockpit-dots">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="cockpit-status">
+                  <span class="status-indicator"></span>
+                  <span>STUDIO COCKPIT · LIVE ENGINE</span>
+                </div>
+                <div class="cockpit-tag">v2.6 ACTIVE</div>
+              </div>
+
+              <!-- Interactive Venture Tab Switcher -->
+              <div class="cockpit-tabs" role="tablist" aria-label="Interactive Venture Switcher">
+                <button type="button" class="cockpit-tab active" data-venture="media" id="tabMedia">
+                  <span>🎬 Media</span>
+                </button>
+                <button type="button" class="cockpit-tab" data-venture="academy" id="tabAcademy">
+                  <span>🎓 Academy</span>
+                </button>
+                <button type="button" class="cockpit-tab" data-venture="tech" id="tabTech">
+                  <span>⚡ Tech</span>
+                </button>
+                <button type="button" class="cockpit-tab" data-venture="unicorns" id="tabUnicorns">
+                  <span>🦄 3D Earth</span>
+                </button>
+              </div>
+
+              <!-- Live Dynamic Venture Display Screen -->
+              <div class="cockpit-screen" id="cockpitScreen">
+                <div class="cockpit-venture-info" id="cockpitVentureInfo">
+                  <div class="cockpit-badge-row">
+                    <span class="c-badge" id="cBadge">★ HIGH-RETENTION PRODUCTION</span>
+                    <span class="c-kpi-pill" id="cKpiPill">5M+ Organic Views</span>
+                  </div>
+
+                  <h3 class="c-venture-title" id="cVentureTitle">Digititup Media</h3>
+                  <p class="c-venture-desc" id="cVentureDesc">
+                    Viral investigative explainers, YouTube documentary production, and commercial narrative engines engineered for maximum watch retention.
+                  </p>
+
+                  <div class="c-metrics-deck" id="cMetricsDeck">
+                    <div class="c-metric-item">
+                      <span class="cm-val" id="cmVal1">5,000,000+</span>
+                      <span class="cm-lbl" id="cmLbl1">Views</span>
+                    </div>
+                    <div class="c-metric-item">
+                      <span class="cm-val" id="cmVal2">70%+</span>
+                      <span class="cm-lbl" id="cmLbl2">Avg Retention</span>
+                    </div>
+                    <div class="c-metric-item">
+                      <span class="cm-val" id="cmVal3">Zero</span>
+                      <span class="cm-lbl" id="cmLbl3">Ad Spend / CAC</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Interactive Compounding Reach Calculator -->
+                <div class="cockpit-compound-box">
+                  <div class="compound-header">
+                    <span class="compound-title">⚡ Compounding Velocity Simulator</span>
+                    <span class="compound-output" id="compoundOutput">Year 2: 12.8M Views · $420K Value</span>
+                  </div>
+                  <input type="range" class="compound-slider" id="compoundSlider" min="1" max="5" value="2" step="1" aria-label="Simulate Compound Years">
+                  <div class="compound-scale">
+                    <span>Year 1</span>
+                    <span>Year 2</span>
+                    <span>Year 3</span>
+                    <span>Year 4</span>
+                    <span>Year 5 (Moonshot)</span>
+                  </div>
+                </div>
+
+                <!-- Dynamic Action Button -->
+                <div class="cockpit-action-row">
+                  <a href="https://media.digititup.com" target="_blank" rel="noopener" class="c-action-btn" id="cActionBtn">
+                    <span id="cActionText">Explore media.digititup.com</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </a>
+                  <span class="c-action-note" id="cActionNote">Verified YouTube &amp; Reel Engine</span>
+                </div>
+              </div>
+
+            </div>
           </div>
-          <div class="metric-label">Tech &amp; Systems Expert</div>
         </div>
 
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="accent">#</span><span class="stat-counter highlight-word" data-target="1">1</span>
-          </div>
-          <div class="metric-label">Engineering Excellence</div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-value">
-            <span class="accent">#</span><span class="stat-counter highlight-word" data-target="1">1</span>
-          </div>
-          <div class="metric-label">Modern &amp; AI Tech</div>
-        </div>
-
-      </div>
-
-      <!-- Secondary Metrics Ticker -->
-      <div class="metrics-ticker reveal reveal-delay-2">
-        <div class="ticker-item">
-          <span style="color:var(--text-highlight);">●</span>
-          <span>Video Impressions: <strong class="highlight-mark">5,000,000+</strong></span>
-        </div>
-        <div class="ticker-item">
-          <span style="color:var(--text-highlight);">●</span>
-          <span>Engaged Community: <strong class="highlight-mark">150,000+</strong></span>
-        </div>
-        <div class="ticker-item">
-          <span style="color:var(--text-highlight);">●</span>
-          <span>Data-Backed Verification: <strong class="highlight-mark">100%</strong></span>
-        </div>
-        <div class="ticker-item">
-          <span style="color:var(--text-highlight);">●</span>
-          <span>Primary Domain: <strong class="highlight-word">digititup.com</strong></span>
-        </div>
       </div>
     </div>
   </section>
 
+  <!-- ================= NEW SECTION: FIELDS OF VENTURES WE BUILD (#fields) ================= -->
+  <section class="section fields-section" id="fields">
+    <div class="container">
+      <div class="vip-card vip-card-jade" style="padding:48px 40px;">
+        
+        <div class="vip-header-row" style="margin-bottom:28px;padding-bottom:20px;">
+          <div>
+            <div class="vip-badge vip-badge-emerald">★ STRATEGIC VENTURE VERTICALS</div>
+            <h2 class="vip-title" style="color:#ffffff;">
+              Fields of Ventures <br>
+              <span class="text-vip-gradient">We Build &amp; Scale</span>
+            </h2>
+          </div>
+          <div class="vip-cta-badge-note" style="color:var(--green);">★ Disciplined Capital Allocation &amp; Moats</div>
+        </div>
+
+        <p class="sec-desc" style="max-width:820px;margin-bottom:28px;">
+          We build ventures exclusively where <span class="highlight-mark">organic distribution</span>, <span class="highlight-mark">applied AI automation</span>, and <span class="highlight-mark">engineering rigor</span> compound over time without bloated operational overhead.
+        </p>
+
+        <!-- 6 Fields Grid -->
+        <div class="fields-grid">
+          
+          <!-- Field 1 -->
+          <div class="field-vip-card reveal">
+            <div class="field-icon-box">⚡</div>
+            <h3 class="field-title">AI &amp; Autonomous Systems</h3>
+            <p class="field-desc">
+              Engineering bespoke business process automations, intelligent agentic workflows, and LLM orchestration tools that replace repetitive corporate operations with instant software speed.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">Agentic Workflows</span>
+              <span class="field-tag-pill">API Integrations</span>
+              <span class="field-tag-pill">LLM Copilots</span>
+            </div>
+          </div>
+
+          <!-- Field 2 -->
+          <div class="field-vip-card reveal reveal-delay-1">
+            <div class="field-icon-box">🎬</div>
+            <h3 class="field-title">High-Retention Media Engines</h3>
+            <p class="field-desc">
+              Investigative video explainers, narrative storytelling, and commercial video syndication that generate millions of views with zero ad spend, building structural distribution moats.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">Viral Explainers</span>
+              <span class="field-tag-pill">70%+ Retention</span>
+              <span class="field-tag-pill">Zero-CAC Reach</span>
+            </div>
+          </div>
+
+          <!-- Field 3 -->
+          <div class="field-vip-card reveal reveal-delay-2">
+            <div class="field-icon-box">🎓</div>
+            <h3 class="field-title">Applied AI Education &amp; Academies</h3>
+            <p class="field-desc">
+              Cohort-based technical masterclasses and builder accelerators training the next generation in practical AI tools, creator workflows, and digital engineering to supply our in-house talent pipeline.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">1,000+ Students</span>
+              <span class="field-tag-pill">Live Masterclasses</span>
+              <span class="field-tag-pill">Talent Pipeline</span>
+            </div>
+          </div>
+
+          <!-- Field 4 -->
+          <div class="field-vip-card reveal">
+            <div class="field-icon-box">☁️</div>
+            <h3 class="field-title">Cloud Platforms &amp; Micro-SaaS</h3>
+            <p class="field-desc">
+              High-performance web applications and specialized developer utilities engineered with modern cloud architectures, sub-millisecond database queries, and 99.9% SLA uptime.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">Fullstack Web</span>
+              <span class="field-tag-pill">Scalable Cloud</span>
+              <span class="field-tag-pill">Micro-SaaS</span>
+            </div>
+          </div>
+
+          <!-- Field 5 -->
+          <div class="field-vip-card reveal reveal-delay-1">
+            <div class="field-icon-box">🌍</div>
+            <h3 class="field-title">Venture Intelligence &amp; Market Data</h3>
+            <p class="field-desc">
+              Proprietary financial tracking instruments and interactive 3D geospatial globes (such as our Global Unicorns 3D tracker) indexing 1,400+ tech unicorns and $7.05T in private capital.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">3D WebGL Earth</span>
+              <span class="field-tag-pill">CB Insights Data</span>
+              <span class="field-tag-pill">Valuation Models</span>
+            </div>
+          </div>
+
+          <!-- Field 6 -->
+          <div class="field-vip-card reveal reveal-delay-2">
+            <div class="field-icon-box">💎</div>
+            <h3 class="field-title">Creator Commerce &amp; Monetization</h3>
+            <p class="field-desc">
+              High-converting digital product funnels, automated community onboarding, and monetization systems that turn passive followers into recurring institutional and retail revenue streams.
+            </p>
+            <div class="field-tags">
+              <span class="field-tag-pill">Conversion Funnels</span>
+              <span class="field-tag-pill">Digital Products</span>
+              <span class="field-tag-pill">Zero Ad Spend</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
   <!-- ================= OUR VENTURES SECTION (#ventures, #media, #academy, #tech) ================= -->
   <section class="section" id="ventures">
     <div class="container">
       <div class="center reveal">
-        <span class="section-tag">Portfolio &amp; Operating Units</span>
-        <h2 class="section-title">The Digititup <span class="text-gradient">Venture Portfolio</span></h2>
-        <p class="section-desc">
+        <span class="sec-tag">★ CORE VENTURE ECOSYSTEM</span>
+        <h2 class="sec-title">Three Compounding Engines. <span class="serif-italic-vip">Zero Friction.</span></h2>
+        <p class="sec-desc">
           Each venture operates as a <span class="text-white-em">focused, high-margin asset</span> while mutually reinforcing the wider ecosystem through <span class="highlight-mark">organic distribution</span>, <span class="highlight-mark">shared talent pipelines</span>, and <span class="highlight-mark">proprietary software</span>.
         </p>
       </div>
 
       <div class="ventures-grid">
         
-        <!-- 1. Digititup Media -->
-        <article class="venture-card reveal" id="media">
+        <!-- 1. Digititup Media (Cinema Ruby VIP) -->
+        <article class="venture-card vip-section-card vip-card-ruby reveal" id="media">
           <div>
-            <div class="venture-header">
-              <div class="venture-icon-box">🎬</div>
+            <div class="vip-header-row" style="margin-bottom:18px;padding-bottom:16px;">
+              <div>
+                <div class="vip-badge vip-badge-ruby">★ MEDIA PRODUCTION &amp; NARRATIVE ENGINE</div>
+                <h3 class="vip-title" style="color:#ffffff;">Digititup Media</h3>
+              </div>
               <span class="venture-status active">Active &amp; Scaling</span>
             </div>
-            <h3 class="venture-title">Digititup Media</h3>
             <p class="venture-tagline"><span class="highlight-mark">High-Retention Video Production</span> &amp; Digital Narrative Engines</p>
             <p class="venture-desc">
               End-to-end digital media production, investigative research, viral storytelling, and <span class="text-white-em">audience retention architecture</span>. Powers brand distribution, YouTube documentary explainers, and commercial video syndication across platforms.
@@ -267,15 +513,15 @@
 
             <div class="venture-metrics-row">
               <div class="vm-item">
-                <strong class="highlight-word">5M+</strong>
+                <strong class="highlight-word" style="color:#ff6b6b;">5M+</strong>
                 <span>Audience Views</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">70%+</strong>
+                <strong class="highlight-word" style="color:#ff6b6b;">70%+</strong>
                 <span>Retention Rate</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">25+</strong>
+                <strong class="highlight-word" style="color:#ff6b6b;">25+</strong>
                 <span>Brand Campaigns</span>
               </div>
             </div>
@@ -296,14 +542,16 @@
           </div>
         </article>
 
-        <!-- 2. Digititup Academy -->
-        <article class="venture-card reveal reveal-delay-1" id="academy">
+        <!-- 2. Digititup Academy (Electric Sapphire VIP) -->
+        <article class="venture-card vip-section-card vip-card-sapphire reveal reveal-delay-1" id="academy">
           <div>
-            <div class="venture-header">
-              <div class="venture-icon-box">🎓</div>
+            <div class="vip-header-row" style="margin-bottom:18px;padding-bottom:16px;">
+              <div>
+                <div class="vip-badge vip-badge-sapphire">★ APPLIED AI ACADEMY &amp; TALENT ENGINE</div>
+                <h3 class="vip-title" style="color:#ffffff;">Digititup Academy</h3>
+              </div>
               <span class="venture-status scaling">Exponential Growth</span>
             </div>
-            <h3 class="venture-title">Digititup Academy</h3>
             <p class="venture-tagline"><span class="highlight-mark">Applied AI Masterclasses</span> &amp; Next-Gen Builders</p>
             <p class="venture-desc">
               Practical masterclasses and live career accelerators taught from scratch in Nepali and English. Equipping thousands of students and builders with actionable mastery in <span class="text-white-em">Generative AI</span>, ChatGPT workflows, YouTube blueprints, and high-impact digital productivity.
@@ -311,15 +559,15 @@
 
             <div class="venture-metrics-row">
               <div class="vm-item">
-                <strong class="highlight-word">1,000+</strong>
+                <strong class="highlight-word" style="color:#38bdf8;">1,000+</strong>
                 <span>Enrolled Learners</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">4.9/5</strong>
+                <strong class="highlight-word" style="color:#38bdf8;">4.9/5</strong>
                 <span>Satisfaction Score</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">100%</strong>
+                <strong class="highlight-word" style="color:#38bdf8;">100%</strong>
                 <span>Skill-Oriented</span>
               </div>
             </div>
@@ -340,14 +588,16 @@
           </div>
         </article>
 
-        <!-- 3. Digititup Tech -->
-        <article class="venture-card reveal reveal-delay-2" id="tech">
+        <!-- 3. Digititup Tech (Cyber Emerald VIP) -->
+        <article class="venture-card vip-section-card vip-card-emerald reveal reveal-delay-2" id="tech">
           <div>
-            <div class="venture-header">
-              <div class="venture-icon-box">⚡</div>
+            <div class="vip-header-row" style="margin-bottom:18px;padding-bottom:16px;">
+              <div>
+                <div class="vip-badge vip-badge-emerald">★ ENTERPRISE AI ARCHITECTURES &amp; SYSTEMS</div>
+                <h3 class="vip-title" style="color:#ffffff;">Digititup Tech</h3>
+              </div>
               <span class="venture-status active">Core Engine</span>
             </div>
-            <h3 class="venture-title">Digititup Tech</h3>
             <p class="venture-tagline"><span class="highlight-mark">Scalable Software Architecture</span> &amp; Custom AI Automation</p>
             <p class="venture-desc">
               Engineering enterprise-grade fullstack web applications, <span class="text-white-em">custom business process automations</span>, and bespoke AI agents. Built with rock-solid engineering discipline to streamline operations and unlock new digital revenue streams.
@@ -355,15 +605,15 @@
 
             <div class="venture-metrics-row">
               <div class="vm-item">
-                <strong class="highlight-word">99.9%</strong>
+                <strong class="highlight-word" style="color:#21d800;">99.9%</strong>
                 <span>System Uptime</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">10x</strong>
+                <strong class="highlight-word" style="color:#21d800;">10x</strong>
                 <span>Workflow Velocity</span>
               </div>
               <div class="vm-item">
-                <strong class="highlight-word">Zero</strong>
+                <strong class="highlight-word" style="color:#21d800;">Zero</strong>
                 <span>Bloated Overhead</span>
               </div>
             </div>
@@ -380,7 +630,7 @@
             <a href="https://tech.digititup.com" target="_blank" rel="noopener" class="venture-link-btn">
               Visit tech.digititup.com <span>↗</span>
             </a>
-            <a href="#work-with-us" class="btn btn-outline btn-sm">Build With Tech</a>
+            <a href="#work-with-us" class="btn btn-primary btn-sm">Build With Tech</a>
           </div>
         </article>
 
@@ -431,128 +681,147 @@
   </section>
 
   <!-- ================= THE FLYWHEEL & INVESTOR TRUST ENGINE ================= -->
-  <section class="section flywheel-section">
+  <section class="section flywheel-section" id="flywheel">
     <div class="container">
-      <div class="center reveal">
-        <span class="section-tag">Strategic Advantage &amp; Defensibility</span>
-        <h2 class="section-title">The Digititup <span class="text-gradient">Investment Flywheel</span></h2>
-        <p class="section-desc">
+      <div class="vip-card vip-card-amethyst" style="padding:48px 40px;">
+        <div class="vip-header-row" style="margin-bottom:28px;padding-bottom:20px;">
+          <div>
+            <div class="vip-badge vip-badge-amethyst">★ ZERO-CAC COMPOUNDING FLYWHEEL</div>
+            <h2 class="vip-title" style="color:#ffffff;">
+              The Interlocking <br>
+              <span class="text-vip-gradient">Venture Flywheel</span>
+            </h2>
+          </div>
+          <div class="vip-cta-badge-note" style="color:#c084fc;">★ Permanent Distribution Advantage</div>
+        </div>
+
+        <p class="sec-desc" style="max-width:820px;margin-bottom:28px;">
           How our business units interlock to generate <span class="highlight-mark">compounding capital efficiency</span>, eliminating the traditional venture reliance on expensive paid acquisition.
         </p>
-      </div>
 
-      <div class="flywheel-grid">
-        
-        <div class="flywheel-card reveal">
-          <span class="flywheel-number">01</span>
-          <h3><span class="highlight-word">Permanent Zero-CAC</span> Distribution</h3>
-          <p>
-            Digititup Media captures <span class="text-white-em">millions of engaged viewers organically</span>. This creates an unfair distribution advantage, allowing us to launch, market, and validate any new venture, course, or software tool with zero ad spend.
-          </p>
-        </div>
+        <div class="flywheel-grid">
+          <div class="flywheel-card reveal">
+            <span class="flywheel-number" style="color:#c084fc;">01</span>
+            <h3><span class="highlight-word">Permanent Zero-CAC</span> Distribution</h3>
+            <p>
+              Digititup Media captures <span class="text-white-em">millions of engaged viewers organically</span>. This creates an unfair distribution advantage, allowing us to launch, market, and validate any new venture, course, or software tool with zero ad spend.
+            </p>
+          </div>
 
-        <div class="flywheel-card reveal reveal-delay-1">
-          <span class="flywheel-number">02</span>
-          <h3><span class="highlight-word">Elite In-House</span> Talent Engine</h3>
-          <p>
-            Digititup Academy educates the most driven young software engineers, editors, and researchers in the region. The <span class="text-white-em">top 1%</span> are systematically recruited into Digititup Tech and Media, ensuring unparalleled talent density at lean cost.
-          </p>
-        </div>
+          <div class="flywheel-card reveal reveal-delay-1">
+            <span class="flywheel-number" style="color:#c084fc;">02</span>
+            <h3><span class="highlight-word">Elite In-House</span> Talent Engine</h3>
+            <p>
+              Digititup Academy educates the most driven young software engineers, editors, and researchers in the region. The <span class="text-white-em">top 1%</span> are systematically recruited into Digititup Tech and Media, ensuring unparalleled talent density at lean cost.
+            </p>
+          </div>
 
-        <div class="flywheel-card reveal reveal-delay-2">
-          <span class="flywheel-number">03</span>
-          <h3><span class="highlight-word">High Gross-Margin</span> AI Systems</h3>
-          <p>
-            Digititup Tech automates content repurposing, customer onboarding, and operational pipelines. High automation keeps human overhead lean while <span class="text-white-em">gross margins scale past 75%</span> on technology and digital assets.
-          </p>
-        </div>
-
-      </div>
-
-      <!-- Compounding Banner -->
-      <div class="synergy-banner reveal">
-        <div class="synergy-text">
-          <h4><span class="highlight-word">Compounding</span> Ecosystem Returns</h4>
-          <p>
-            Every rupee generated by Media is multiplied through Academy education programs and stabilized through Tech enterprise software. Investors gain exposure to a balanced, anti-fragile portfolio led by technical founders.
-          </p>
-        </div>
-        <a href="#work-with-us" class="btn btn-primary" style="white-space:nowrap;">Discuss Strategic Allocation →</a>
-      </div>
-
-      <!-- Core Pillars Grid -->
-      <div class="pillars-grid">
-        
-        <div class="pillar-card reveal">
-          <div class="pillar-icon">🏛️</div>
-          <h4><span class="highlight-mark">IOE Pulchowk DNA</span></h4>
-          <p>Rigorous analytical engineering mindset applied to every business problem, ensuring dependable architecture.</p>
-        </div>
-
-        <div class="pillar-card reveal reveal-delay-1">
-          <div class="pillar-icon">📊</div>
-          <h4><span class="highlight-mark">100% Data-Driven</span></h4>
-          <p>All strategies, content scripts, and product features are tested with real audience telemetry and verified analytics.</p>
-        </div>
-
-        <div class="pillar-card reveal reveal-delay-2">
-          <div class="pillar-icon">⚡</div>
-          <h4><span class="highlight-mark">Hyper-Lean Operations</span></h4>
-          <p>Small elite team of 6+ achieving the output of a 30-person agency via applied AI toolchains and workflow orchestration.</p>
-        </div>
-
-        <div class="pillar-card reveal reveal-delay-3">
-          <div class="pillar-icon">🛡️</div>
-          <h4><span class="highlight-mark">Institutional Transparency</span></h4>
-          <p>Clean corporate governance, transparent source citations, periodic performance reports, and honest communication.</p>
-        </div>
-
-      </div>
-
-      <!-- FAQ Accordion For Potential Investors & Partners -->
-      <div class="faq-wrap reveal">
-        <div class="center" style="margin-bottom:32px;">
-          <h3 style="font-size:30px;">Frequently Asked Questions</h3>
-          <p style="font-size:15px; color:var(--text-secondary);">Key information for prospective angels, venture partners, and strategic collaborators.</p>
-        </div>
-
-        <div class="faq-item active">
-          <button class="faq-trigger" type="button">
-            <h4>What is Digititup's core business and growth model?</h4>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-content">
-            Digititup Agency Pvt. Ltd. operates as both a revenue-generating digital agency and an internal venture incubation studio. We build commercial media properties, cohort academies, and scalable software solutions. Revenue is generated across enterprise tech contracts, course enrollments, high-impact brand campaigns, and equity in incubated products.
+          <div class="flywheel-card reveal reveal-delay-2">
+            <span class="flywheel-number" style="color:#c084fc;">03</span>
+            <h3><span class="highlight-word">High Gross-Margin</span> AI Systems</h3>
+            <p>
+              Digititup Tech automates content repurposing, customer onboarding, and operational pipelines. High automation keeps human overhead lean while <span class="text-white-em">gross margins scale past 75%</span> on technology and digital assets.
+            </p>
           </div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-trigger" type="button">
-            <h4>How can investors participate in Digititup ventures?</h4>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-content">
-            We offer participation either at the holding agency level (Digititup Agency Pvt. Ltd.) or as targeted project financing / venture syndication for specific initiatives (such as expanding Digititup Tech's SaaS products or scaling Academy regional cohorts). We prioritize value-add investors who bring strategic network access, domain expertise, and international scaling channels.
+        <!-- Compounding Banner -->
+        <div class="synergy-banner reveal" style="border-color:rgba(168,85,247,0.3);background:linear-gradient(135deg,rgba(168,85,247,0.1) 0%,rgba(10,5,18,0.7) 100%);">
+          <div class="synergy-text">
+            <h4><span class="highlight-word" style="color:#c084fc;">Compounding</span> Ecosystem Returns</h4>
+            <p>
+              Every rupee generated by Media is multiplied through Academy education programs and stabilized through Tech enterprise software. Investors gain exposure to a balanced, anti-fragile portfolio led by technical founders.
+            </p>
+          </div>
+          <a href="#work-with-us" class="btn btn-primary" style="white-space:nowrap;">Discuss Strategic Allocation →</a>
+        </div>
+
+        <!-- Core Pillars Grid -->
+        <div class="pillars-grid">
+          <div class="pillar-card reveal">
+            <div class="pillar-icon">🏛️</div>
+            <h4><span class="highlight-mark">IOE Pulchowk DNA</span></h4>
+            <p>Rigorous analytical engineering mindset applied to every business problem, ensuring dependable architecture.</p>
+          </div>
+
+          <div class="pillar-card reveal reveal-delay-1">
+            <div class="pillar-icon">📊</div>
+            <h4><span class="highlight-mark">100% Data-Driven</span></h4>
+            <p>All strategies, content scripts, and product features are tested with real audience telemetry and verified analytics.</p>
+          </div>
+
+          <div class="pillar-card reveal reveal-delay-2">
+            <div class="pillar-icon">⚡</div>
+            <h4><span class="highlight-mark">Hyper-Lean Operations</span></h4>
+            <p>Small elite team achieving the output of a 30-person agency via applied AI toolchains and workflow orchestration.</p>
+          </div>
+
+          <div class="pillar-card reveal reveal-delay-3">
+            <div class="pillar-icon">🛡️</div>
+            <h4><span class="highlight-mark">Institutional Transparency</span></h4>
+            <p>Clean corporate governance, transparent source citations, periodic performance reports, and honest communication.</p>
           </div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-trigger" type="button">
-            <h4>What makes Digititup defensible against larger agencies?</h4>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-content">
-            Traditional agencies rely on heavy headcount and burning money on Google/Meta ads to buy attention. We have established organic audience trust with over 5 Million video views and a built-in academy to supply top talent. Combined with our deep AI automation, our operational cost basis is a fraction of traditional competitors.
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ & GOVERNANCE SECTION (#faq) ================= -->
+  <section class="section faq-section" id="faq">
+    <div class="container">
+      <div class="vip-card vip-card-platinum" style="padding:48px 40px;">
+        <div class="vip-header-row" style="margin-bottom:28px;padding-bottom:20px;">
+          <div>
+            <div class="vip-badge vip-badge-platinum">★ GOVERNANCE &amp; DUE DILIGENCE</div>
+            <h2 class="vip-title" style="color:#ffffff;">
+              Frequently Asked Questions <br>
+              <span class="text-vip-gradient">For Partners &amp; Angels</span>
+            </h2>
           </div>
+          <div class="vip-cta-badge-note">★ 100% Sourced In Public</div>
         </div>
 
-        <div class="faq-item">
-          <button class="faq-trigger" type="button">
-            <h4>How are investor communications and reporting handled?</h4>
-            <span class="faq-icon">+</span>
-          </button>
-          <div class="faq-content">
-            Partners receive structured monthly executive summaries, quarterly financial performance reviews, and direct WhatsApp / video briefings with the founder. Transparency is our foundational value.
+        <!-- FAQ Accordion For Potential Investors & Partners -->
+        <div class="faq-wrap reveal" style="margin-top:20px;">
+          <div class="faq-item active">
+            <button class="faq-trigger" type="button">
+              <h4>What is Digititup's core business and growth model?</h4>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-content">
+              Digititup Agency Pvt. Ltd. operates as both a revenue-generating digital agency and an internal venture incubation studio. We build commercial media properties, cohort academies, and scalable software solutions. Revenue is generated across enterprise tech contracts, course enrollments, high-impact brand campaigns, and equity in incubated products.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" type="button">
+              <h4>How can investors participate in Digititup ventures?</h4>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-content">
+              We offer participation either at the holding agency level (Digititup Agency Pvt. Ltd.) or as targeted project financing / venture syndication for specific initiatives (such as expanding Digititup Tech's SaaS products or scaling Academy regional cohorts). We prioritize value-add investors who bring strategic network access, domain expertise, and international scaling channels.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" type="button">
+              <h4>What makes Digititup defensible against larger agencies?</h4>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-content">
+              Traditional agencies rely on heavy headcount and burning money on Google/Meta ads to buy attention. We have established organic audience trust with over 5 Million video views and a built-in academy to supply top talent. Combined with our deep AI automation, our operational cost basis is a fraction of traditional competitors.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-trigger" type="button">
+              <h4>How are investor communications and reporting handled?</h4>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-content">
+              Partners receive structured monthly executive summaries, quarterly financial performance reviews, and direct WhatsApp / video briefings with the founder. Transparency is our foundational value.
+            </div>
           </div>
         </div>
 
@@ -563,68 +832,89 @@
   <!-- ================= FOUNDER SECTION (#founder) ================= -->
   <section class="section founder-section" id="founder">
     <div class="container">
-      <div class="founder-grid">
-        
-        <div class="founder-media reveal">
-          <div class="founder-photo-frame">
-            <img src="assets/img/pratik-hero.png" alt="Pratik Chaudhary - Founder of Digititup Agency" loading="lazy">
+      <div class="vip-card vip-card-gold" style="padding:48px 40px;">
+        <div class="vip-header-row" style="margin-bottom:28px;padding-bottom:20px;">
+          <div>
+            <div class="vip-badge">★ FOUNDER &amp; SYSTEMS ARCHITECT</div>
+            <h2 class="vip-title" style="color:#ffffff;">
+              Founder &amp; Executive <br>
+              <span class="text-gold-gradient">Systems Leadership</span>
+            </h2>
           </div>
-          <div class="founder-floating-badge">
-            <div class="founder-avatar-mini">
-              <img src="assets/img/icon.png" alt="Digititup Icon">
-            </div>
-            <div class="founder-badge-text">
-              <b>Pratik Chaudhary</b>
-              <span>Founder &amp; CEO, Digititup Agency Pvt. Ltd.</span>
-            </div>
-          </div>
+          <div class="vip-cta-badge-note" style="color:var(--gold);">★ Verified IOE Pulchowk Engineering Standards</div>
         </div>
 
-        <div class="founder-info reveal reveal-delay-1">
-          <span class="founder-role">Founder &amp; Systems Architect</span>
-          <h3>Engineered With <span class="text-gradient">Vision, Rigor,</span> and <span class="highlight-word">Purpose</span>.</h3>
+        <div class="founder-grid" style="margin-top:20px;">
           
-          <blockquote class="founder-quote">
-            "Be the change you want to see. A claim that cannot survive a hard question does not deserve to be repeated."
-          </blockquote>
-
-          <p class="founder-bio">
-            Pratik Chaudhary is an engineer, content creator, and serial entrepreneur based in Kathmandu, Nepal. With an engineering foundation from the prestigious <strong><span class="highlight-mark">Institute of Engineering (IOE), Pulchowk Campus</span></strong>, Pratik combines technical precision, data-backed reasoning, and viral storytelling to simplify complex topics for millions of viewers.
-          </p>
-
-          <p class="founder-bio">
-            As the founder of Digititup Agency Pvt. Ltd., he architects the synergy between <span class="text-white-em">media production</span>, <span class="text-white-em">educational infrastructure</span>, and <span class="text-white-em">modern AI technologies</span>. Every video, course, and software system is engineered with open transparency, high retention, and long-term societal value.
-          </p>
-
-          <div class="founder-credentials">
-            <div class="cred-card">
-              <strong class="highlight-word">IOE Pulchowk Campus</strong>
-              <span>Engineering Background &amp; Systems Analysis</span>
+          <!-- Founder Visual Media Column -->
+          <div class="founder-media reveal">
+            <div class="founder-photo-frame">
+              <img src="assets/img/pratik-hero.png" alt="Pratik Chaudhary - Founder of Digititup Agency" loading="lazy">
             </div>
-            <div class="cred-card">
-              <strong class="highlight-word">5M+ Total Video Views</strong>
-              <span>Researched, Fact-Checked, Deep Explainers</span>
-            </div>
-            <div class="cred-card">
-              <strong class="highlight-word">150K+ Community Reach</strong>
-              <span>Cross-Platform Engaged Followers</span>
-            </div>
-            <div class="cred-card">
-              <strong class="highlight-word">100% Sourced In Public</strong>
-              <span>Open Transparency &amp; Verifiable Citations</span>
+            <div class="founder-floating-badge">
+              <div class="founder-avatar-mini">
+                <img src="assets/img/icon.png" alt="Digititup Icon">
+              </div>
+              <div class="founder-badge-text">
+                <b>Pratik Chaudhary</b>
+                <span>Founder &amp; CEO, Digititup Agency Pvt. Ltd.</span>
+              </div>
             </div>
           </div>
 
-          <div class="founder-actions">
-            <a href="https://pratiktharu.com.np" target="_blank" rel="noopener" class="btn btn-primary">
-              Visit Personal Website (pratiktharu.com.np) ↗
-            </a>
-            <a href="https://www.youtube.com/@PratikkChaudhary" target="_blank" rel="noopener" class="btn btn-outline">
-              YouTube Channel ↗
-            </a>
+          <!-- Founder Narrative & Credentials Column -->
+          <div class="founder-info reveal reveal-delay-1">
+            <span class="founder-role" style="color:var(--gold);">Institute of Engineering (IOE) Alumni</span>
+            <h3 style="font-size:clamp(24px, 2.8vw, 36px);margin-bottom:16px;">
+              Engineered With <span class="text-gold-gradient">Vision, Rigor,</span> and <span class="serif-italic-gold">Purpose.</span>
+            </h3>
+            
+            <blockquote class="founder-quote">
+              "Be the change you want to see. A claim that cannot survive a hard question does not deserve to be repeated."
+            </blockquote>
+
+            <p class="founder-bio">
+              Pratik Chaudhary is an engineer, content creator, and serial entrepreneur based in Kathmandu, Nepal. With an engineering foundation from the prestigious <strong><span class="highlight-mark">Institute of Engineering (IOE), Pulchowk Campus</span></strong>, Pratik combines technical precision, data-backed reasoning, and viral storytelling to simplify complex topics for millions of viewers.
+            </p>
+
+            <p class="founder-bio">
+              As the founder of Digititup Agency Pvt. Ltd., he architects the synergy between <span class="text-white-em">media production</span>, <span class="text-white-em">educational infrastructure</span>, and <span class="text-white-em">modern AI technologies</span>. Every video, course, and software system is engineered with open transparency, high retention, and long-term societal value.
+            </p>
+
+            <div class="founder-credentials">
+              <div class="cred-card">
+                <strong class="highlight-word" style="color:var(--gold);">IOE Pulchowk Campus</strong>
+                <span>Engineering Background &amp; Systems Analysis</span>
+              </div>
+              <div class="cred-card">
+                <strong class="highlight-word" style="color:var(--gold);">5M+ Total Video Views</strong>
+                <span>Researched, Fact-Checked, Deep Explainers</span>
+              </div>
+              <div class="cred-card">
+                <strong class="highlight-word" style="color:var(--gold);">150K+ Community Reach</strong>
+                <span>Cross-Platform Engaged Followers</span>
+              </div>
+              <div class="cred-card">
+                <strong class="highlight-word" style="color:var(--gold);">100% Sourced In Public</strong>
+                <span>Open Transparency &amp; Verifiable Citations</span>
+              </div>
+            </div>
+
+            <div class="founder-actions">
+              <a href="https://pratiktharu.com.np" target="_blank" rel="noopener" class="btn btn-gold">
+                <span>Visit Personal Website (pratiktharu.com.np)</span> <span>↗</span>
+              </a>
+              <a href="https://www.youtube.com/@PratikkChaudhary" target="_blank" rel="noopener" class="btn btn-glass-vip">
+                <span>YouTube Channel</span> <span>↗</span>
+              </a>
+              <a href="https://wa.me/9779812414094" target="_blank" rel="noopener" class="btn btn-outline" style="border-color:rgba(229,192,123,0.4);color:var(--gold);">
+                <span>Connect VIP Desk</span> <span>↗</span>
+              </a>
+            </div>
+
           </div>
+
         </div>
-
       </div>
     </div>
   </section>
@@ -632,167 +922,177 @@
   <!-- ================= WORK WITH US SECTION (#work-with-us) ================= -->
   <section class="section work-section" id="work-with-us">
     <div class="container">
-      <div class="center reveal">
-        <span class="section-tag">Direct Partnership &amp; Careers</span>
-        <h2 class="section-title">Work <span class="text-gradient">With Us</span></h2>
-        <p class="section-desc">
-          Whether you want to <span class="highlight-mark">invest in a category-leading venture</span> or <span class="highlight-mark">join our high-performance core team</span>, both start with a direct, clear communication.
+      <div class="vip-card vip-card-sovereign" style="padding:48px 40px;">
+        <div class="vip-header-row" style="margin-bottom:28px;padding-bottom:20px;">
+          <div>
+            <div class="vip-badge vip-badge-emerald">★ INSTITUTIONAL CAPITAL &amp; PARTNERSHIPS</div>
+            <h2 class="vip-title" style="color:#ffffff;">
+              Partner, Invest &amp; <br>
+              <span class="text-gold-gradient">Build With Us</span>
+            </h2>
+          </div>
+          <div class="vip-cta-badge-note" style="color:var(--gold);">★ Strict Confidentiality &amp; Direct Founder Desk</div>
+        </div>
+
+        <p class="sec-desc" style="max-width:820px;margin-bottom:28px;">
+          Whether you want to <span class="highlight-mark">invest in a category-leading venture</span> or <span class="highlight-mark">join our high-performance core team</span>, both start with a direct, confidential executive communication.
         </p>
-      </div>
 
-      <!-- Tab Switcher -->
-      <div class="form-tabs reveal reveal-delay-1">
-        <button type="button" class="form-tab-btn active" data-target="box-invest">
-          🤝 Invest on Venture
-        </button>
-        <button type="button" class="form-tab-btn" data-target="box-team">
-          🚀 Join the Team
-        </button>
-      </div>
+        <!-- Tab Switcher -->
+        <div class="form-tabs reveal reveal-delay-1">
+          <button type="button" class="form-tab-btn active" data-target="box-invest">
+            🤝 Invest on Venture
+          </button>
+          <button type="button" class="form-tab-btn" data-target="box-team">
+            🚀 Join the Team
+          </button>
+        </div>
 
-      <div class="forms-container reveal reveal-delay-2">
-        
-        <!-- FORM 1: INVEST ON VENTURE -->
-        <div class="form-box active" id="box-invest">
-          <div class="form-header">
-            <h3>Partner or Invest on a <span class="highlight-word">Venture</span></h3>
-            <p>Connect directly with the founder and executive team. Submissions are instantly routed to WhatsApp for rapid response.</p>
+        <div class="forms-container reveal reveal-delay-2">
+          
+          <!-- FORM 1: INVEST ON VENTURE -->
+          <div class="form-box active" id="box-invest">
+            <div class="form-header">
+              <h3>Partner or Invest on a <span class="highlight-word">Venture</span></h3>
+              <p>Connect directly with the founder and executive team. Submissions are instantly routed to WhatsApp for rapid response.</p>
+            </div>
+
+            <form id="investForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="inv-name">Your Full Name *</label>
+                  <input class="form-control" id="inv-name" type="text" placeholder="e.g. John Doe / Partner" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="inv-email">Work Email *</label>
+                  <input class="form-control" id="inv-email" type="email" placeholder="investor@fund.com" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="inv-phone">WhatsApp / Phone Number</label>
+                  <input class="form-control" id="inv-phone" type="tel" placeholder="+977 98XXXXXXXX / +1 ...">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="inv-venture">Venture of Interest *</label>
+                  <select class="form-control" id="inv-venture" required>
+                    <option value="" disabled selected>Select Venture Focus</option>
+                    <option value="Digititup Holding Agency (Multi-Venture)">Digititup Holding Agency (Multi-Venture)</option>
+                    <option value="Digititup Media (media.digititup.com)">Digititup Media (Production &amp; Syndication)</option>
+                    <option value="Digititup Academy (academy.pratiktharu.com.np)">Digititup Academy (Education Scaleup)</option>
+                    <option value="Digititup Tech (tech.digititup.com)">Digititup Tech (Enterprise Software &amp; AI)</option>
+                    <option value="Upcoming AI Incubation Lab">Upcoming AI Incubation Lab</option>
+                    <option value="Strategic Commercial Sponsorship">Strategic Commercial Sponsorship</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="inv-ticket">Projected Ticket Size / Capital Range</label>
+                  <select class="form-control" id="inv-ticket">
+                    <option value="" disabled selected>Select Investment Range</option>
+                    <option value="NPR 5,00,000 to NPR 25,00,000 (~$3.7K - $18K)">NPR 5,00,000 to NPR 25,00,000 (~$3.7K - $18K)</option>
+                    <option value="NPR 25,00,000 to NPR 1,00,00,000 (~$18K - $75K)">NPR 25,00,000 to NPR 1,00,00,000 (~$18K - $75K)</option>
+                    <option value="Above NPR 1,00,00,000 (~$75K - $250K+)">Above NPR 1,00,00,000 (~$75K - $250K+)</option>
+                    <option value="Strategic Advisory / Non-Capital Partnership">Strategic Advisory / Non-Capital Partnership</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="inv-message">Investment Thesis / Brief Proposal *</label>
+                  <textarea class="form-control" id="inv-message" placeholder="Tell us about your investment background, timeline, or what strategic value you'd like to unlock together." required></textarea>
+                </div>
+
+                <div class="form-group full">
+                  <button type="submit" class="form-submit-btn">
+                    <span>💬 Submit &amp; Connect via WhatsApp (+977 9812414094) →</span>
+                  </button>
+                  <p class="form-disclaimer">
+                    Form automatically opens WhatsApp with all details pre-composed for instant conversation. For email, reach us at <a href="mailto:digititup@gmail.com" style="color:var(--text-highlight); text-decoration:underline;">digititup@gmail.com</a>.
+                  </p>
+                </div>
+              </div>
+            </form>
           </div>
 
-          <form id="investForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label" for="inv-name">Your Full Name *</label>
-                <input class="form-control" id="inv-name" type="text" placeholder="e.g. John Doe / Partner" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inv-email">Work Email *</label>
-                <input class="form-control" id="inv-email" type="email" placeholder="investor@fund.com" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inv-phone">WhatsApp / Phone Number</label>
-                <input class="form-control" id="inv-phone" type="tel" placeholder="+977 98XXXXXXXX / +1 ...">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inv-venture">Venture of Interest *</label>
-                <select class="form-control" id="inv-venture" required>
-                  <option value="" disabled selected>Select Venture Focus</option>
-                  <option value="Digititup Holding Agency (Multi-Venture)">Digititup Holding Agency (Multi-Venture)</option>
-                  <option value="Digititup Media (media.digititup.com)">Digititup Media (Production & Syndication)</option>
-                  <option value="Digititup Academy (academy.pratiktharu.com.np)">Digititup Academy (Education Scaleup)</option>
-                  <option value="Digititup Tech (tech.digititup.com)">Digititup Tech (Enterprise Software & AI)</option>
-                  <option value="Upcoming AI Incubation Lab">Upcoming AI Incubation Lab</option>
-                  <option value="Strategic Commercial Sponsorship">Strategic Commercial Sponsorship</option>
-                </select>
-              </div>
-
-              <div class="form-group full">
-                <label class="form-label" for="inv-ticket">Projected Ticket Size / Capital Range</label>
-                <select class="form-control" id="inv-ticket">
-                  <option value="" disabled selected>Select Investment Range</option>
-                  <option value="NPR 5,00,000 to NPR 25,00,000 (~$3.7K - $18K)">NPR 5,00,000 to NPR 25,00,000 (~$3.7K - $18K)</option>
-                  <option value="NPR 25,00,000 to NPR 1,00,00,000 (~$18K - $75K)">NPR 25,00,000 to NPR 1,00,00,000 (~$18K - $75K)</option>
-                  <option value="Above NPR 1,00,00,000 (~$75K - $250K+)">Above NPR 1,00,00,000 (~$75K - $250K+)</option>
-                  <option value="Strategic Advisory / Non-Capital Partnership">Strategic Advisory / Non-Capital Partnership</option>
-                </select>
-              </div>
-
-              <div class="form-group full">
-                <label class="form-label" for="inv-message">Investment Thesis / Brief Proposal *</label>
-                <textarea class="form-control" id="inv-message" placeholder="Tell us about your investment background, timeline, or what strategic value you'd like to unlock together." required></textarea>
-              </div>
-
-              <div class="form-group full">
-                <button type="submit" class="form-submit-btn">
-                  <span>💬 Submit &amp; Connect via WhatsApp (+977 9812414094) →</span>
-                </button>
-                <p class="form-disclaimer">
-                  Form automatically opens WhatsApp with all details pre-composed for instant conversation. For email, reach us at <a href="mailto:digititup@gmail.com" style="color:var(--text-highlight); text-decoration:underline;">digititup@gmail.com</a>.
-                </p>
-              </div>
+          <!-- FORM 2: JOIN THE TEAM -->
+          <div class="form-box" id="box-team">
+            <div class="form-header">
+              <h3>Join the Digititup <span class="highlight-word">Core Team</span></h3>
+              <p>We are searching for world-class video editors, motion animators, AI software engineers, and researchers.</p>
             </div>
-          </form>
-        </div>
 
-        <!-- FORM 2: JOIN THE TEAM -->
-        <div class="form-box" id="box-team">
-          <div class="form-header">
-            <h3>Join the Digititup <span class="highlight-word">Core Team</span></h3>
-            <p>We are searching for world-class video editors, motion animators, AI software engineers, and researchers.</p>
+            <form id="teamForm">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label" for="team-name">Full Name *</label>
+                  <input class="form-control" id="team-name" type="text" placeholder="Your name" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="team-email">Email Address *</label>
+                  <input class="form-control" id="team-email" type="email" placeholder="you@gmail.com" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="team-phone">WhatsApp / Phone Number</label>
+                  <input class="form-control" id="team-phone" type="tel" placeholder="+977 98XXXXXXXX">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="team-role">Role You Are Applying For *</label>
+                  <select class="form-control" id="team-role" required>
+                    <option value="" disabled selected>Select Your Role</option>
+                    <option value="Senior Video Editor / Storyteller">Senior Video Editor / Storyteller</option>
+                    <option value="Motion Graphics Designer & Animator">Motion Graphics Designer & Animator</option>
+                    <option value="Full-Stack / AI Software Engineer">Full-Stack / AI Software Engineer</option>
+                    <option value="Content Researcher & Scriptwriter">Content Researcher & Scriptwriter</option>
+                    <option value="Growth Marketer & Social Lead">Growth Marketer & Social Lead</option>
+                    <option value="Thumbnail & Brand Visual Artist">Thumbnail & Brand Visual Artist</option>
+                    <option value="Other High-Impact Discipline">Other High-Impact Discipline</option>
+                  </select>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="team-portfolio">Portfolio / GitHub / Work Sample Link *</label>
+                  <input class="form-control" id="team-portfolio" type="url" placeholder="https://drive.google.com/... or https://github.com/..." required>
+                </div>
+
+                <div class="form-group full">
+                  <label class="form-label" for="team-message">Why You? (A few lines on your strongest work) *</label>
+                  <textarea class="form-control" id="team-message" placeholder="Keep it concise. Show us the single most impressive piece of work you have executed." required></textarea>
+                </div>
+
+                <div class="form-group full">
+                  <button type="submit" class="form-submit-btn">
+                    <span>💬 Submit Application via WhatsApp (+977 9812414094) →</span>
+                  </button>
+                  <p class="form-disclaimer">
+                    Instant submission directly to the recruitment team. Portfolio links are mandatory.
+                  </p>
+                </div>
+              </div>
+            </form>
           </div>
 
-          <form id="teamForm">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label" for="team-name">Full Name *</label>
-                <input class="form-control" id="team-name" type="text" placeholder="Your name" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="team-email">Email Address *</label>
-                <input class="form-control" id="team-email" type="email" placeholder="you@gmail.com" required>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="team-phone">WhatsApp / Phone Number</label>
-                <input class="form-control" id="team-phone" type="tel" placeholder="+977 98XXXXXXXX">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="team-role">Role You Are Applying For *</label>
-                <select class="form-control" id="team-role" required>
-                  <option value="" disabled selected>Select Your Role</option>
-                  <option value="Senior Video Editor / Storyteller">Senior Video Editor / Storyteller</option>
-                  <option value="Motion Graphics Designer & Animator">Motion Graphics Designer & Animator</option>
-                  <option value="Full-Stack / AI Software Engineer">Full-Stack / AI Software Engineer</option>
-                  <option value="Content Researcher & Scriptwriter">Content Researcher & Scriptwriter</option>
-                  <option value="Growth Marketer & Social Lead">Growth Marketer & Social Lead</option>
-                  <option value="Thumbnail & Brand Visual Artist">Thumbnail & Brand Visual Artist</option>
-                  <option value="Other High-Impact Discipline">Other High-Impact Discipline</option>
-                </select>
-              </div>
-
-              <div class="form-group full">
-                <label class="form-label" for="team-portfolio">Portfolio / GitHub / Work Sample Link *</label>
-                <input class="form-control" id="team-portfolio" type="url" placeholder="https://drive.google.com/... or https://github.com/..." required>
-              </div>
-
-              <div class="form-group full">
-                <label class="form-label" for="team-message">Why You? (A few lines on your strongest work) *</label>
-                <textarea class="form-control" id="team-message" placeholder="Keep it concise. Show us the single most impressive piece of work you have executed." required></textarea>
-              </div>
-
-              <div class="form-group full">
-                <button type="submit" class="form-submit-btn">
-                  <span>💬 Submit Application via WhatsApp (+977 9812414094) →</span>
-                </button>
-                <p class="form-disclaimer">
-                  Instant submission directly to the recruitment team. Portfolio links are mandatory.
-                </p>
-              </div>
-            </div>
-          </form>
         </div>
 
-      </div>
-
-      <!-- Direct Contact Strip -->
-      <div class="contact-direct-strip reveal reveal-delay-3">
-        <a href="https://wa.me/9779812414094" target="_blank" rel="noopener" class="direct-chip">
-          <span>💬</span>
-          <span>WhatsApp: <strong>+977 9812414094</strong></span>
-        </a>
-        <a href="mailto:digititup@gmail.com" class="direct-chip">
-          <span>✉️</span>
-          <span>Email: <strong>digititup@gmail.com</strong></span>
-        </a>
-        <div class="direct-chip">
-          <span>📍</span>
-          <span>Location: <strong>Kathmandu, Nepal</strong></span>
+        <!-- Direct Contact Strip -->
+        <div class="contact-direct-strip reveal reveal-delay-3">
+          <a href="https://wa.me/9779812414094" target="_blank" rel="noopener" class="direct-chip">
+            <span>💬</span>
+            <span>WhatsApp: <strong>+977 9812414094</strong></span>
+          </a>
+          <a href="mailto:digititup@gmail.com" class="direct-chip">
+            <span>✉️</span>
+            <span>Email: <strong>digititup@gmail.com</strong></span>
+          </a>
+          <div class="direct-chip">
+            <span>📍</span>
+            <span>Location: <strong>Kathmandu, Nepal</strong></span>
+          </div>
         </div>
+
       </div>
     </div>
   </section>
@@ -810,81 +1110,108 @@
     </div>
   </div>
 
-  <!-- ================= FOOTER ================= -->
+  <!-- ================= ULTRA-PREMIUM SITE FOOTER ================= -->
   <footer class="site-footer">
-    <div class="container">
+    <div class="container footer-container">
       <div class="footer-top">
         
-        <div class="footer-brand">
-          <img src="assets/img/logo.png" alt="Digititup Agency Logo" style="height:38px; width:auto;">
-          <p>
-            Digititup Agency Pvt. Ltd. is an integrated digital holding agency and venture studio. We engineer high-retention media, intelligent software platforms, and educational accelerators with technical precision.
+        <!-- Col 1: Brand & Studio Mission -->
+        <div class="footer-col footer-brand-col">
+          <div class="footer-brand-header">
+            <a href="#home" class="brand-logo" aria-label="Digititup Agency Home">
+              <img src="assets/img/logo.png" alt="DigitItUp" class="logo-img" />
+            </a>
+          </div>
+
+          <p class="footer-desc">
+            High-velocity digital venture studio engineering category-defining media engines, intelligent software architectures, and cohort academies with permanent Zero-CAC distribution.
           </p>
-          <div class="footer-socials">
-            <a href="https://www.tiktok.com/@digititup" target="_blank" rel="noopener" class="social-link" aria-label="Digititup TikTok">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.04.85.12V9.4a6.33 6.33 0 0 0-.85-.06A6.34 6.34 0 0 0 3.1 15.68a6.34 6.34 0 0 0 10.82 4.48 6.27 6.27 0 0 0 1.87-4.49V8.69a8.18 8.18 0 0 0 4.8 1.56V6.8a4.85 4.85 0 0 1-1-.11z"/></svg>
-            </a>
-            <a href="https://www.facebook.com/digititupagency" target="_blank" rel="noopener" class="social-link" aria-label="Digititup Facebook">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4h-3V12h3V9.4c0-3 1.8-4.7 4.6-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.3l-.5 3.5h-2.8v8.4A12 12 0 0 0 24 12z"/></svg>
-            </a>
-            <a href="https://www.instagram.com/digititup/" target="_blank" rel="noopener" class="social-link" aria-label="Digititup Instagram">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@DigititUp" target="_blank" rel="noopener" class="social-link" aria-label="Digititup YouTube Channel">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.3 31.3 0 0 0 0 12a31.3 31.3 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.3 31.3 0 0 0 24 12a31.3 31.3 0 0 0-.5-5.8zM9.6 15.6V8.4L15.8 12l-6.2 3.6z"/></svg>
-            </a>
-            <a href="http://linkedin.com/company/digititup/?viewAsMember=true" target="_blank" rel="noopener" class="social-link" aria-label="Digititup LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.3a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z"/></svg>
-            </a>
+
+          <div class="sister-co-badge">
+            <span>Holding Studio of</span>
+            <b>Digititup Media, Tech &amp; Academy</b>
+          </div>
+
+          <div class="footer-system-status">
+            <span class="status-pulse-dot"></span>
+            <span>IOE Pulchowk Engineering Standards</span>
           </div>
         </div>
 
-        <div class="footer-links-grid">
-          
-          <div class="footer-col">
-            <h5>Navigation</h5>
-            <ul class="footer-nav">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#ventures">Our Ventures</a></li>
-              <li><a href="#founder">Founder &amp; Story</a></li>
-              <li><a href="#work-with-us">Work With Us</a></li>
-              <li><a href="#work-with-us">Investor Deck</a></li>
-            </ul>
-          </div>
+        <!-- Col 2: Navigation -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Navigation</h4>
+          <ul class="footer-nav">
+            <li><a href="#home">Home</a></li>
+            <li><a href="unicorns.html">Unicorns 3D Earth <span class="footer-mini-tag">1,404 Live</span></a></li>
+            <li><a href="#ventures">Our Ventures</a></li>
+            <li><a href="#fields">Fields We Build <span class="footer-mini-tag">6 Verticals</span></a></li>
+            <li><a href="#academy">Digititup Academy</a></li>
+            <li><a href="#founder" style="color:var(--gold);">★ Founder Leadership</a></li>
+            <li><a href="#work-with-us">Work With Us</a></li>
+            <li><a href="#faq">Due Diligence &amp; FAQ</a></li>
+          </ul>
+        </div>
 
-          <div class="footer-col">
-            <h5>Ventures</h5>
-            <ul class="footer-nav">
-              <li><a href="https://media.digititup.com" target="_blank" rel="noopener">Digititup Media ↗</a></li>
-              <li><a href="https://academy.pratiktharu.com.np" target="_blank" rel="noopener">Digititup Academy ↗</a></li>
-              <li><a href="https://tech.digititup.com" target="_blank" rel="noopener">Digititup Tech ↗</a></li>
-              <li><a href="#ventures">Incubation Labs</a></li>
-              <li><a href="https://pratiktharu.com.np" target="_blank" rel="noopener">Founder Site ↗</a></li>
-            </ul>
-          </div>
+        <!-- Col 3: Direct Contact -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Direct Contact</h4>
+          <ul class="footer-nav">
+            <li><a href="mailto:digititup@gmail.com">digititup@gmail.com</a></li>
+            <li><a href="tel:+9779812414094">+977 9812414094</a></li>
+            <li><a href="https://wa.me/9779812414094" target="_blank" rel="noopener">WhatsApp Concierge ↗</a></li>
+            <li><a href="https://pratiktharu.com.np" target="_blank" rel="noopener">Pratik Chaudhary (Founder) ↗</a></li>
+            <li><a href="https://media.digititup.com" target="_blank" rel="noopener">media.digititup.com ↗</a></li>
+            <li><span style="font-size:13.5px;color:var(--ink-2);display:inline-flex;align-items:center;gap:6px;">📍 Kathmandu, Nepal (HQ)</span></li>
+          </ul>
+        </div>
 
-          <div class="footer-col">
-            <h5>Contact &amp; Legal</h5>
-            <ul class="footer-nav">
-              <li><a href="mailto:digititup@gmail.com">digititup@gmail.com</a></li>
-              <li><a href="tel:+9779812414094">+977-9812414094</a></li>
-              <li><a href="https://wa.me/9779812414094" target="_blank" rel="noopener">WhatsApp Direct</a></li>
-              <li><span style="font-size:13px; color:var(--text-muted);">Kathmandu, Nepal</span></li>
-              <li><span style="font-size:13px; color:var(--text-muted);">Reg: Digititup Agency Pvt. Ltd.</span></li>
-            </ul>
-          </div>
+        <!-- Col 4: Follow On Socials -->
+        <div class="footer-col">
+          <h4 class="footer-col-title">Follow On Socials</h4>
+          <div class="footer-social-grid">
+            <a href="https://www.tiktok.com/@digititup" target="_blank" rel="noopener" class="footer-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64c.29 0 .58.04.85.12V9.4a6.33 6.33 0 0 0-.85-.06A6.34 6.34 0 0 0 3.1 15.68a6.34 6.34 0 0 0 10.82 4.48 6.27 6.27 0 0 0 1.87-4.49V8.69a8.18 8.18 0 0 0 4.8 1.56V6.8a4.85 4.85 0 0 1-1-.11z"/></svg>
+              <span>TikTok <b>@digititup</b></span>
+            </a>
 
+            <a href="https://www.instagram.com/digititup/" target="_blank" rel="noopener" class="footer-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              <span>Instagram <b>@digititup</b></span>
+            </a>
+
+            <a href="https://www.youtube.com/@DigititUp" target="_blank" rel="noopener" class="footer-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+              <span>YouTube <b>@DigititUp</b></span>
+            </a>
+
+            <a href="https://www.facebook.com/digititupagency" target="_blank" rel="noopener" class="footer-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              <span>Facebook <b>/digititupagency</b></span>
+            </a>
+
+            <a href="http://linkedin.com/company/digititup/?viewAsMember=true" target="_blank" rel="noopener" class="footer-social-link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 10.9v8.37H9.2V10.9H6.46M7.83 6.3a1.64 1.64 0 1 0 0 3.28 1.64 1.64 0 0 0 0-3.28z"/></svg>
+              <span>LinkedIn <b>/digititup</b></span>
+            </a>
+          </div>
         </div>
 
       </div>
 
+      <!-- Footer Bottom Sub-Bar -->
       <div class="footer-bottom">
-        <div>
-          © 2026 <strong>Digititup Agency Pvt. Ltd.</strong> All rights reserved. Domain: <strong>digititup.com</strong>
+        <div class="footer-bottom-left">
+          &copy; 2026 <strong>Digititup Agency Pvt. Ltd.</strong> All rights reserved. Registered in Kathmandu, Nepal.
         </div>
-        <button type="button" class="back-to-top-btn" id="backToTop">
-          <span>Back to top</span> <span>↑</span>
-        </button>
+        <div class="footer-bottom-right">
+          <span class="footer-domain-badge">Domain: <strong class="footer-domain-pill">digititup.com</strong></span>
+          <span class="footer-dot-divider">&bull;</span>
+          <span>100% Sourced In Public</span>
+          <button type="button" class="back-to-top-btn" id="backToTop" aria-label="Scroll to top of page">
+            <span>Back to top</span> <span>&uarr;</span>
+          </button>
+        </div>
       </div>
     </div>
   </footer>

@@ -853,17 +853,19 @@
 
     textureLoader = new THREE.TextureLoader();
 
-    // 1. High-Definition Photorealistic Earth (128 Segments + Anisotropic Filtering)
-    const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 128, 128);
+    // 1. Fast, Lightweight & Photorealistic Earth (Optimized 64x64 Segments + Anisotropic Filtering)
+    const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
     const earthMat = new THREE.MeshStandardMaterial({
+      color: 0x0f1c29,
       roughness: 0.8,
       metalness: 0.05
     });
 
-    const maxAnisotropy = renderer ? renderer.capabilities.getMaxAnisotropy() : 8;
+    const maxAnisotropy = renderer ? Math.min(renderer.capabilities.getMaxAnisotropy(), 8) : 4;
 
     textureLoader.load('assets/img/earth/earth_day.jpg', function(texture) {
       texture.anisotropy = maxAnisotropy;
+      earthMat.color.setHex(0xffffff);
       earthMat.map = texture;
       earthMat.needsUpdate = true;
     });
@@ -872,7 +874,7 @@
     textureLoader.load('assets/img/earth/earth_normal.jpg', function(normTex) {
       normTex.anisotropy = maxAnisotropy;
       earthMat.normalMap = normTex;
-      earthMat.normalScale = new THREE.Vector2(0.85, 0.85);
+      earthMat.normalScale = new THREE.Vector2(0.8, 0.8);
       earthMat.needsUpdate = true;
     });
 
@@ -886,8 +888,8 @@
     earthMesh = new THREE.Mesh(earthGeo, earthMat);
     earthGroup.add(earthMesh);
 
-    // 2. Translucent Orbiting Cloud Layer
-    const cloudsGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.006, 128, 128);
+    // 2. Translucent Orbiting Cloud Layer (64x64)
+    const cloudsGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.006, 64, 64);
     const cloudsMat = new THREE.MeshStandardMaterial({
       transparent: true,
       opacity: 0.32,
@@ -901,8 +903,8 @@
     cloudsMesh = new THREE.Mesh(cloudsGeo, cloudsMat);
     earthGroup.add(cloudsMesh);
 
-    // 3. Multi-layer Rayleigh Atmosphere Rim Glow
-    const atmosGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.032, 128, 128);
+    // 3. Multi-layer Rayleigh Atmosphere Rim Glow (64x64)
+    const atmosGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.032, 64, 64);
     const atmosMat = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -989,6 +991,80 @@
   /* ==========================================================================
      7. 3D Beacons with Precision Hitboxes
      ========================================================================== */
+  // Cached reusable geometries for zero-allocation performance
+  let _cachedNeedleGeo = null;
+  let _cachedHeadGeo = null;
+  let _cachedRingGeo = null;
+  let _cachedHitboxGeo = null;
+  const _needleMatCache = {};
+  const _headMatCache = {};
+  const _ringMatCache = {};
+  const _sharedHitboxMat = new THREE.MeshBasicMaterial({ visible: false });
+
+  function getSharedNeedleGeo() {
+    if (!_cachedNeedleGeo) {
+      _cachedNeedleGeo = new THREE.CylinderGeometry(0.03, 0.08, 1.0, 6);
+      _cachedNeedleGeo.translate(0, 0.5, 0); // Anchor base to origin
+    }
+    return _cachedNeedleGeo;
+  }
+
+  function getSharedHeadGeo() {
+    if (!_cachedHeadGeo) {
+      _cachedHeadGeo = new THREE.SphereGeometry(1.0, 10, 10);
+    }
+    return _cachedHeadGeo;
+  }
+
+  function getSharedRingGeo() {
+    if (!_cachedRingGeo) {
+      _cachedRingGeo = new THREE.RingGeometry(0.1, 0.28, 12);
+    }
+    return _cachedRingGeo;
+  }
+
+  function getSharedHitboxGeo() {
+    if (!_cachedHitboxGeo) {
+      _cachedHitboxGeo = new THREE.SphereGeometry(1.0, 6, 6);
+    }
+    return _cachedHitboxGeo;
+  }
+
+  function getNeedleMat(colorHex) {
+    if (!_needleMatCache[colorHex]) {
+      _needleMatCache[colorHex] = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(colorHex),
+        transparent: true,
+        opacity: 0.85
+      });
+    }
+    return _needleMatCache[colorHex];
+  }
+
+  function getHeadMat(colorHex) {
+    if (!_headMatCache[colorHex]) {
+      _headMatCache[colorHex] = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(colorHex),
+        emissive: new THREE.Color(colorHex),
+        emissiveIntensity: 0.95,
+        roughness: 0.15
+      });
+    }
+    return _headMatCache[colorHex];
+  }
+
+  function getRingMat(colorHex) {
+    if (!_ringMatCache[colorHex]) {
+      _ringMatCache[colorHex] = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(colorHex),
+        transparent: true,
+        opacity: 0.65,
+        side: THREE.DoubleSide
+      });
+    }
+    return _ringMatCache[colorHex];
+  }
+
   function rebuild3DBeacons() {
     if (!beaconsGroup) return;
 
@@ -998,13 +1074,17 @@
     interactiveHitboxes = [];
 
     if (viewMode === 'countries') {
-      // --- COUNTRIES MODE (Sleek Micro-Precision Needles) ---
+      // --- COUNTRIES MODE (Fast Shared Meshes) ---
       const countries = getFilteredCountries();
+      const needleGeo = getSharedNeedleGeo();
+      const headGeo = getSharedHeadGeo();
+      const ringGeo = getSharedRingGeo();
+      const hitboxGeo = getSharedHitboxGeo();
 
       countries.forEach(function (c) {
         const rootPos = latLngToVector3(c.lat, c.lng, EARTH_RADIUS, 0);
         const normal = rootPos.clone().normalize();
-        const needleHeight = Math.max(2.0, Math.min(4.2, Math.log2(c.count + 1) * 0.9));
+        const needleHeight = Math.max(1.8, Math.min(3.6, Math.log2(c.count + 1) * 0.75));
 
         const holder = new THREE.Group();
 
@@ -1014,58 +1094,46 @@
         else if (c.rank <= 25) colorHex = '#38bdf8';
         else colorHex = '#a855f7';
 
-        const threeColor = new THREE.Color(colorHex);
-
-        // Sleek Micro-Precision Needle
-        const needle = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.04, 0.10, needleHeight, 8),
-          new THREE.MeshBasicMaterial({ color: threeColor, transparent: true, opacity: 0.85 })
-        );
-        needle.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(needleHeight / 2)));
+        // Needle (shared geometry)
+        const needle = new THREE.Mesh(needleGeo, getNeedleMat(colorHex));
+        needle.scale.set(1.0, needleHeight, 1.0);
+        needle.position.copy(rootPos);
         needle.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
         holder.add(needle);
 
-        // Crystalline Micro-Gem Bead
+        // Crystalline Micro-Gem Bead (shared geometry)
         const isSelected = selectedEntity && selectedEntity.country === c.country;
-        const beadRadius = isSelected ? 0.55 : Math.max(0.22, Math.min(0.42, Math.log10(c.count + 1) * 0.28));
-        const head = new THREE.Mesh(
-          new THREE.SphereGeometry(beadRadius, 14, 14),
-          new THREE.MeshStandardMaterial({
-            color: isSelected ? 0xffffff : threeColor,
-            emissive: threeColor,
-            emissiveIntensity: 0.95,
-            roughness: 0.1
-          })
-        );
+        const beadRadius = isSelected ? 0.55 : Math.max(0.24, Math.min(0.42, Math.log10(c.count + 1) * 0.28));
+        const head = new THREE.Mesh(headGeo, getHeadMat(colorHex));
+        head.scale.setScalar(beadRadius);
         head.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(needleHeight + beadRadius * 0.7)));
         holder.add(head);
 
-        // Fine Surface Reticle
-        const ring = new THREE.Mesh(
-          new THREE.RingGeometry(0.10, 0.28, 16),
-          new THREE.MeshBasicMaterial({ color: threeColor, transparent: true, opacity: 0.7, side: THREE.DoubleSide })
-        );
+        // Reticle (shared geometry)
+        const ring = new THREE.Mesh(ringGeo, getRingMat(colorHex));
         ring.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(0.08)));
         ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
         holder.add(ring);
 
-        // Precision Hitbox
-        const hitbox = new THREE.Mesh(
-          new THREE.SphereGeometry(0.8, 8, 8),
-          new THREE.MeshBasicMaterial({ visible: false })
-        );
+        // Hitbox
+        const hitbox = new THREE.Mesh(hitboxGeo, _sharedHitboxMat);
         hitbox.position.copy(head.position);
-        hitbox.userData = { type: 'country', country: c, visualHead: head, holder: holder, baseBeadRadius: beadRadius };
+        hitbox.scale.setScalar(0.8);
+        hitbox.userData = { type: 'country', country: c, visualHead: head, holder: holder };
         holder.add(hitbox);
         interactiveHitboxes.push(hitbox);
 
         beaconsGroup.add(holder);
       });
     } else {
-      // --- UNICORNS MODE: INDIVIDUAL PINPOINT FOR EVERY SINGLE UNICORN ---
+      // --- UNICORNS MODE: INDIVIDUAL PINPOINT FOR ALL UNICORNS (BLAZING FAST) ---
       const unicorns = getFilteredUnicorns();
+      const needleGeo = getSharedNeedleGeo();
+      const headGeo = getSharedHeadGeo();
+      const ringGeo = getSharedRingGeo();
+      const hitboxGeo = getSharedHitboxGeo();
 
-      // Count unicorns per city to apply golden spiral dispersion in dense hubs
+      // Count per city for golden spiral dispersion
       const cityCounts = new Map();
       unicorns.forEach(function (u) {
         const key = u.city + '||' + u.country;
@@ -1084,10 +1152,9 @@
         let finalLng = u.lng;
 
         if (totalInCity > 1 && indexInCity > 0) {
-          // Fermat phyllotaxis golden spiral distribution around city center
           const c = Math.min(0.045, 0.45 / Math.sqrt(totalInCity));
           const r = c * Math.sqrt(indexInCity);
-          const theta = indexInCity * 2.399963; // 137.508°
+          const theta = indexInCity * 2.399963;
           const dLat = r * Math.cos(theta);
           const dLng = r * Math.sin(theta) / Math.max(0.2, Math.cos(u.lat * Math.PI / 180));
           finalLat += dLat;
@@ -1096,59 +1163,41 @@
 
         const rootPos = latLngToVector3(finalLat, finalLng, EARTH_RADIUS, 0);
         const normal = rootPos.clone().normalize();
-
-        // Needle height is compact and refined
         const needleHeight = Math.max(1.2, Math.min(2.4, Math.log10((u.valNumber || 1.0) + 1) * 0.9));
+
         const holder = new THREE.Group();
-
         const colorHex = CATEGORY_COLORS[u.industry] || '#4ade80';
-        const threeColor = new THREE.Color(colorHex);
 
-        // Ultra-Fine Needle (Radius 0.03 to 0.08)
-        const needle = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.03, 0.08, needleHeight, 8),
-          new THREE.MeshBasicMaterial({ color: threeColor, transparent: true, opacity: 0.85 })
-        );
-        needle.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(needleHeight / 2)));
+        // Reusable Needle
+        const needle = new THREE.Mesh(needleGeo, getNeedleMat(colorHex));
+        needle.scale.set(1.0, needleHeight, 1.0);
+        needle.position.copy(rootPos);
         needle.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), normal);
         holder.add(needle);
 
-        // Micro-Gemstone Bead (Radius 0.18 to 0.35 - compact so zoomed-in pins NEVER overlap!)
+        // Reusable Head Bead
         const isSelected = selectedEntity && selectedEntity.id === u.id;
         const beadRadius = isSelected ? 0.45 : Math.max(0.16, Math.min(0.32, Math.log10((u.valNumber || 1.0) + 1) * 0.18));
-        const head = new THREE.Mesh(
-          new THREE.SphereGeometry(beadRadius, 14, 14),
-          new THREE.MeshStandardMaterial({
-            color: isSelected ? 0xffffff : threeColor,
-            emissive: threeColor,
-            emissiveIntensity: 0.95,
-            roughness: 0.1
-          })
-        );
+        const head = new THREE.Mesh(headGeo, getHeadMat(colorHex));
+        head.scale.setScalar(beadRadius);
         head.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(needleHeight + beadRadius * 0.7)));
         holder.add(head);
 
-        // Subtle Surface Reticle Ring
-        const ring = new THREE.Mesh(
-          new THREE.RingGeometry(0.08, 0.22, 16),
-          new THREE.MeshBasicMaterial({ color: threeColor, transparent: true, opacity: 0.65, side: THREE.DoubleSide })
-        );
+        // Reusable Ring
+        const ring = new THREE.Mesh(ringGeo, getRingMat(colorHex));
         ring.position.copy(rootPos.clone().add(normal.clone().multiplyScalar(0.08)));
         ring.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), normal);
         holder.add(ring);
 
-        // Hitbox for precision screen-space picking
-        const hitbox = new THREE.Mesh(
-          new THREE.SphereGeometry(0.6, 8, 8),
-          new THREE.MeshBasicMaterial({ visible: false })
-        );
+        // Hitbox
+        const hitbox = new THREE.Mesh(hitboxGeo, _sharedHitboxMat);
         hitbox.position.copy(head.position);
+        hitbox.scale.setScalar(0.6);
         hitbox.userData = {
           type: 'unicorn',
           unicorn: u,
           visualHead: head,
           holder: holder,
-          baseBeadRadius: beadRadius,
           lat: finalLat,
           lng: finalLng
         };
@@ -1455,15 +1504,6 @@
     if (earthGroup) {
       earthGroup.rotation.y = currentRotation.y;
       earthGroup.rotation.x = currentRotation.x;
-
-      // Perspective scale compensation: pins remain crisp, delicate, and non-overlapping when zooming in
-      const zoomRatio = Math.max(0.35, Math.min(1.0, (cameraDistance - 98) / 130));
-      if (beaconsGroup && beaconsGroup.children.length > 0) {
-        beaconsGroup.children.forEach(function (holder) {
-          // Keep needle and bead sharp and proportional to zoom
-          holder.scale.setScalar(zoomRatio);
-        });
-      }
     }
 
     if (cloudsMesh) {

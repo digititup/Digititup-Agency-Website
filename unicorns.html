@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Global Unicorns 3D Earth | Digititup Agency Pvt. Ltd.</title>
+  <meta name="description" content="Explore the world's most valuable tech, AI, and fintech unicorns on an interactive 3D Earth. Discover HQ locations, valuations, and venture intelligence by Digititup Agency Pvt. Ltd.">
+  <meta name="theme-color" content="#018d2e">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Global Unicorns 3D Earth | Digititup Agency Pvt. Ltd.">
+  <meta property="og:description" content="Explore global tech, AI, and fintech unicorns on an interactive 3D Earth with real-time valuations and HQ coordinates.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://digititup.com/unicorns.html">
+  <meta property="og:image" content="assets/img/icon.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/img/icon.png">
+  <link rel="apple-touch-icon" href="assets/img/icon.png">
+
+  <!-- Google Fonts: Cormorant & EB Garamond, Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet & Unicorns 3D Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/unicorns.css">
+</head>
+<body class="unicorns-body">
+
+  <!-- ================= FIXED SITE HEADER ================= -->
+  <header class="site-header unicorns-header">
+    <div class="container header-inner">
+      <a href="index.html#home" class="brand-logo" aria-label="Digititup Agency Home">
+        <img src="assets/img/logo.png" alt="Digititup Agency Logo" class="logo-full" width="210" height="42">
+        <img src="assets/img/icon.png" alt="Digititup Logo Icon" class="logo-icon" width="38" height="38">
+      </a>
+
+      <nav class="nav-container" aria-label="Primary Navigation">
+        <ul class="nav-menu">
+          <li><a href="index.html#home" class="nav-link">Home</a></li>
+          <li><a href="unicorns.html" class="nav-link active">Unicorns</a></li>
+          <li><a href="index.html#ventures" class="nav-link">Media</a></li>
+          <li><a href="index.html#academy" class="nav-link">Academy</a></li>
+          <li><a href="index.html#founder" class="nav-link">Founder</a></li>
+          <li><a href="index.html#work-with-us" class="nav-link">Work With Us</a></li>
+        </ul>
+      </nav>
+
+      <div class="header-actions">
+        <a href="index.html#work-with-us" class="btn btn-outline btn-sm header-cta">Invest on Venture →</a>
+        <button class="menu-toggle" aria-label="Toggle navigation drawer" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Navigation Drawer -->
+  <aside class="mobile-drawer" aria-label="Mobile Navigation Menu">
+    <div class="drawer-header">
+      <img src="assets/img/logo.png" alt="Digititup Agency Logo" style="height:32px; width:auto;">
+    </div>
+    <ul class="drawer-links">
+      <li><a href="index.html#home" class="drawer-link">Home</a></li>
+      <li><a href="unicorns.html" class="drawer-link" style="color:var(--text-highlight);">Unicorns 3D Earth 🌍</a></li>
+      <li><a href="index.html#ventures" class="drawer-link">Our Ventures</a></li>
+      <li><a href="index.html#media" class="drawer-link">Digititup Media</a></li>
+      <li><a href="index.html#academy" class="drawer-link">Digititup Academy</a></li>
+      <li><a href="index.html#tech" class="drawer-link">Digititup Tech</a></li>
+      <li><a href="index.html#founder" class="drawer-link">Founder & Leadership</a></li>
+      <li><a href="index.html#work-with-us" class="drawer-link">Work With Us</a></li>
+    </ul>
+    <div class="drawer-footer">
+      <a href="index.html#work-with-us" class="btn btn-primary" style="width:100%">Partner / Invest Now →</a>
+      <p style="font-size:12px; color:var(--text-muted); text-align:center;">digititup@gmail.com • +977 9812414094</p>
+    </div>
+  </aside>
+
+  <!-- ================= 3D EARTH WEBGL CANVAS ================= -->
+  <div id="globeContainer" role="region" aria-label="Interactive 3D Earth Globe Showing Global Unicorns"></div>
+
+  <!-- ================= FLOATING HUD & CONTROLS ================= -->
+  <div class="unicorns-hud">
+    <div class="hud-top-bar">
+      <!-- Left Controls: Search Bar + Category Filter Bar -->
+      <div class="hud-left-controls">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="unicornSearch" class="search-input" placeholder="Search company, city, country..." autocomplete="off">
+        </div>
+
+        <!-- Category Filter Chips (Active in Unicorns mode - CB Insights Industries) -->
+        <div class="category-filter-bar">
+          <button type="button" class="filter-chip active" data-category="All">All Industries</button>
+          <button type="button" class="filter-chip" data-category="Enterprise Tech">💻 Enterprise Tech</button>
+          <button type="button" class="filter-chip" data-category="Financial Services">💳 Financial Services</button>
+          <button type="button" class="filter-chip" data-category="Media & Entertainment">🎬 Media &amp; Entertainment</button>
+          <button type="button" class="filter-chip" data-category="Healthcare & Life Sciences">🧬 Healthcare &amp; Life Sciences</button>
+          <button type="button" class="filter-chip" data-category="Consumer & Retail">🛍️ Consumer &amp; Retail</button>
+          <button type="button" class="filter-chip" data-category="Industrials">⚙️ Industrials &amp; Space</button>
+          <button type="button" class="filter-chip" data-category="Insurance">🛡️ Insurance</button>
+        </div>
+      </div>
+
+      <!-- Live Tracking Metrics Badge (Vertical Stack) -->
+      <div class="hud-metrics-badge" aria-label="Global Unicorn Metrics">
+        <div class="hm-item">
+          <span class="hm-dot"></span>
+          <span id="activeCountDisplay">Showing: <strong>1,404 Unicorns</strong></span>
+        </div>
+        <div class="hm-item">
+          <span class="hm-icon">💎</span>
+          <span>Tracked Value: <strong class="hm-val-highlight">$7.05T Total</strong></span>
+        </div>
+        <div class="hm-item">
+          <span class="hm-icon">🌍</span>
+          <span id="reachCountDisplay">Global Reach: <strong>53 Nations (306 Hubs)</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LEFT-SIDE UNICORN DIRECTORY ================= -->
+  <aside class="unicorns-sidebar" aria-label="Unicorns Directory">
+    <div class="sidebar-header">
+      <div class="sidebar-title-row">
+        <h3 id="sidebarTitle">Global Unicorns</h3>
+        <span class="source-tag">CB Insights</span>
+      </div>
+      <div class="mode-switcher-bar">
+        <button type="button" class="mode-btn active" data-mode="unicorns">🦄 Unicorns (1,404)</button>
+        <button type="button" class="mode-btn" data-mode="countries">🌍 By Country (55)</button>
+      </div>
+    </div>
+    <div class="sidebar-list" id="unicornListContainer">
+      <!-- Injected dynamically via unicorns.js -->
+    </div>
+  </aside>
+
+  <!-- ================= 3D CAMERA FLOATING TOOLBAR ================= -->
+  <nav class="camera-toolbar" aria-label="3D Earth View Controls">
+    <button type="button" class="toolbar-btn active" id="toggleRotateBtn">
+      <span>⏸</span> Pause Orbit
+    </button>
+    <button type="button" class="toolbar-btn" id="resetViewBtn">
+      <span>🔄</span> Reset
+    </button>
+
+    <div class="toolbar-divider"></div>
+
+    <button type="button" class="toolbar-btn preset-btn active" data-region="all">Global</button>
+    <button type="button" class="toolbar-btn preset-btn" data-region="us">US</button>
+    <button type="button" class="toolbar-btn preset-btn" data-region="europe">Europe</button>
+    <button type="button" class="toolbar-btn preset-btn" data-region="southasia">South Asia</button>
+    <button type="button" class="toolbar-btn preset-btn" data-region="southeastasia">SE Asia</button>
+    <button type="button" class="toolbar-btn preset-btn" data-region="latam">LatAm</button>
+  </nav>
+
+  <!-- ================= VENTURE DETAIL SLIDE-IN GLASS DRAWER ================= -->
+  <div class="unicorn-drawer-backdrop" id="drawerBackdrop"></div>
+  <article class="unicorn-drawer" id="unicornDrawer" aria-label="Venture Dossier">
+    <button type="button" class="drawer-close-btn" id="closeDrawerBtn" aria-label="Close Drawer">✕</button>
+
+    <div class="drawer-content">
+      <div class="drawer-pill-row">
+        <span class="drawer-category-badge" id="drawerCategory">AI &amp; Foundation Models</span>
+        <span class="drawer-coords-badge" id="drawerCoords">37.77° N, -122.41° E</span>
+      </div>
+
+      <h2 class="drawer-title" id="drawerCompany">OpenAI</h2>
+      <span class="drawer-val-highlight" id="drawerValuation">$157 Billion</span>
+
+      <!-- Location Highlight with explicit City & Country -->
+      <div class="drawer-location-box">
+        <span class="dl-icon">📍</span>
+        <div class="dl-content">
+          <div class="dl-label" id="drawerLocationLabel">Headquarters Location</div>
+          <div class="dl-val">
+            <strong id="drawerCity">San Francisco</strong>, <span id="drawerCountry">United States</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="drawer-tagline" id="drawerTagline">Frontier Artificial General Intelligence &amp; ChatGPT</p>
+
+      <div class="drawer-section-title" id="drawerSectionTitle">Venture Dossier &amp; Architecture</div>
+      <p class="drawer-summary" id="drawerSummary">Pioneered modern generative artificial intelligence with GPT-4, ChatGPT, and Sora.</p>
+
+      <div class="drawer-meta-grid" id="drawerMetaGrid">
+        <div class="dmg-item">
+          <strong id="drawerMeta1Label">Key Founders</strong>
+          <span id="drawerMeta1Val">Sam Altman, Greg Brockman</span>
+        </div>
+        <div class="dmg-item">
+          <strong id="drawerMeta2Label">Founded Year</strong>
+          <span id="drawerMeta2Val">2015</span>
+        </div>
+        <div class="dmg-item" style="grid-column: span 2;">
+          <strong id="drawerMeta3Label">Lead Investors / Backers</strong>
+          <span id="drawerMeta3Val">Microsoft, Thrive Capital, Khosla Ventures</span>
+        </div>
+      </div>
+
+      <div class="drawer-synergy-box" id="drawerSynergyBox">
+        <strong>Digititup Studio Strategic Synergy</strong>
+        <p id="drawerSynergy">Digititup Tech builds enterprise AI pipelines directly on OpenAI architectures; Digititup Media produces investigative explainers deconstructing frontier model research.</p>
+      </div>
+
+      <!-- Same City Tech Hub Peers (Quick-hop within the same city) -->
+      <div class="drawer-peers-section" id="drawerPeersSection" style="display: none;">
+        <div class="drawer-peers-title" id="drawerPeersTitle">Other Unicorns in this City:</div>
+        <div class="drawer-peers-chips" id="drawerPeersChips"></div>
+      </div>
+
+      <!-- Country Unicorns Interactive List (Active when viewing Countries) -->
+      <div class="drawer-country-unicorns-section" id="drawerCountryUnicornsSection" style="display: none;">
+        <div class="drawer-section-title" id="drawerCountryUnicornsTitle">Unicorn Companies in this Nation</div>
+        <div class="drawer-country-unicorns-list" id="drawerCountryUnicornsList">
+          <!-- Injected dynamically via unicorns.js -->
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <a href="#" target="_blank" rel="noopener" class="btn btn-primary drawer-link-btn" id="drawerLink">
+        Visit Official Website ↗
+      </a>
+    </div>
+  </article>
+
+  <!-- ================= SCRIPTS ================= -->
+  <!-- Native Three.js 3D Engine -->
+  <script src="assets/js/three.min.js"></script>
+  <!-- Complete CB Insights Global Unicorns Dataset (1,404 Companies) -->
+  <script src="assets/data/unicorns_cbinsights.js"></script>
+  <!-- 3D Google Earth Unicorns Engine & Interactive Logic -->
+  <script src="assets/js/unicorns.js"></script>
+</body>
+</html>

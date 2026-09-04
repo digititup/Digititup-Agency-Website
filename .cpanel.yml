@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/digititu/public_html/
+    - if [ "$PWD" != "$DEPLOYPATH" ] && [ "$PWD/" != "$DEPLOYPATH" ]; then /bin/cp -f index.html unicorns.html .htaccess $DEPLOYPATH; /bin/cp -Rf assets $DEPLOYPATH; fi
+    - /bin/chmod 644 $DEPLOYPATH/index.html $DEPLOYPATH/unicorns.html $DEPLOYPATH/.htaccess 2>/dev/null || true
+    - /bin/chmod -R 755 $DEPLOYPATH/assets 2>/dev/null || true

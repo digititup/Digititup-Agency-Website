@@ -198,11 +198,12 @@
   </div>
 
   <!-- ================= LEFT-SIDE UNICORN DIRECTORY ================= -->
-  <aside class="unicorns-sidebar" aria-label="Unicorns Directory">
+  <aside class="unicorns-sidebar" id="unicornsSidebar" aria-label="Unicorns Directory">
     <div class="sidebar-header">
       <div class="sidebar-title-row">
         <h3 id="sidebarTitle">Global Unicorns</h3>
         <span class="source-tag">CB Insights</span>
+        <button type="button" class="sidebar-close-btn" id="closeSidebarBtn" aria-label="Close Directory">✕</button>
       </div>
       <div class="mode-switcher-bar">
         <button type="button" class="mode-btn active" data-mode="unicorns">🦄 Unicorns (1,404)</button>
@@ -221,6 +222,9 @@
     </button>
     <button type="button" class="toolbar-btn" id="resetViewBtn">
       <span>🔄</span> Reset
+    </button>
+    <button type="button" class="toolbar-btn mobile-dir-btn" id="openMobileDirBtn">
+      <span>📋</span> Directory
     </button>
 
     <div class="toolbar-divider"></div>
@@ -310,6 +314,8 @@
   <script src="assets/js/three.min.js"></script>
   <!-- Complete CB Insights Global Unicorns Dataset (1,404 Companies) -->
   <script src="assets/data/unicorns_cbinsights.js"></script>
+  <!-- Geopolitical Sovereign Country Boundaries Layer (177 Sovereign Nations) -->
+  <script src="assets/data/world_boundaries.js"></script>
   <!-- 3D Google Earth Unicorns Engine & Interactive Logic -->
   <script src="assets/js/unicorns.js"></script>
 </body>

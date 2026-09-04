@@ -818,31 +818,55 @@
     const container = document.getElementById('globeContainer');
     if (!container) return;
 
+    // Ensure UNICORNS_DATA is properly bound from window.CB_INSIGHTS_UNICORNS
+    if ((!UNICORNS_DATA || UNICORNS_DATA.length === 0) && window.CB_INSIGHTS_UNICORNS && window.CB_INSIGHTS_UNICORNS.length > 0) {
+      UNICORNS_DATA = window.CB_INSIGHTS_UNICORNS;
+    }
+
     updateUI();
 
+    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
 
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(45, width / height, 1, 3000);
     camera.position.set(0, 0, cameraDistance);
+    window.__camera = camera;
 
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: !isMobile,
+        alpha: true,
+        powerPreference: isMobile ? 'default' : 'high-performance'
+      });
+    } catch (e) {
+      console.warn("Standard WebGL init failed, retrying basic context:", e);
+      try {
+        renderer = new THREE.WebGLRenderer({ antialias: false, alpha: false });
+      } catch (e2) {
+        console.error("WebGL completely unavailable:", e2);
+        return;
+      }
+    }
+
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    // Lightweight DPR cap on mobile devices for 60 FPS and battery conservation
+    const dpr = isMobile ? Math.min(window.devicePixelRatio || 1, 1.25) : Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(dpr);
     renderer.setClearColor(0x040608, 1);
     container.innerHTML = '';
     container.appendChild(renderer.domElement);
 
     // Sunlight & Space Lighting
-    const sunLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 1.6);
     sunLight.position.set(250, 150, 200);
     scene.add(sunLight);
 
-    const ambientLight = new THREE.AmbientLight(0x2a3d4f, 0.95);
+    const ambientLight = new THREE.AmbientLight(0x485c72, 1.35);
     scene.add(ambientLight);
 
-    const emeraldRimLight = new THREE.DirectionalLight(0x018d2e, 0.6);
+    const emeraldRimLight = new THREE.DirectionalLight(0x018d2e, 0.7);
     emeraldRimLight.position.set(-200, -80, -100);
     scene.add(emeraldRimLight);
 
@@ -850,18 +874,21 @@
     earthGroup.rotation.x = currentRotation.x;
     earthGroup.rotation.y = currentRotation.y;
     scene.add(earthGroup);
+    window.__earthGroup = earthGroup;
+    window.__scene = scene;
 
     textureLoader = new THREE.TextureLoader();
 
-    // 1. Fast, Lightweight & Photorealistic Earth (Optimized 64x64 Segments + Anisotropic Filtering)
-    const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, 64, 64);
+    // 1. Fast, Lightweight & Photorealistic Earth (Optimized 48x48 on mobile, 64x64 on desktop)
+    const segments = isMobile ? 48 : 64;
+    const earthGeo = new THREE.SphereGeometry(EARTH_RADIUS, segments, segments);
     const earthMat = new THREE.MeshStandardMaterial({
-      color: 0x0f1c29,
-      roughness: 0.8,
+      color: 0x1a2634,
+      roughness: 0.75,
       metalness: 0.05
     });
 
-    const maxAnisotropy = renderer ? Math.min(renderer.capabilities.getMaxAnisotropy(), 8) : 4;
+    const maxAnisotropy = renderer ? Math.min(renderer.capabilities.getMaxAnisotropy(), isMobile ? 2 : 8) : 2;
 
     textureLoader.load('assets/img/earth/earth_day.jpg', function(texture) {
       texture.anisotropy = maxAnisotropy;
@@ -870,7 +897,7 @@
       earthMat.needsUpdate = true;
     });
 
-    // 3D Normal Map for Realistic Mountain & Terrain Relief
+    // 3D Normal Map for Mountain Relief
     textureLoader.load('assets/img/earth/earth_normal.jpg', function(normTex) {
       normTex.anisotropy = maxAnisotropy;
       earthMat.normalMap = normTex;
@@ -878,7 +905,7 @@
       earthMat.needsUpdate = true;
     });
 
-    // Specular Map for Glistening Oceans & Matte Continents
+    // Specular Map for Oceans & Continents
     textureLoader.load('assets/img/earth/earth_specular.jpg', function(specTex) {
       specTex.anisotropy = maxAnisotropy;
       earthMat.roughnessMap = specTex;
@@ -888,11 +915,12 @@
     earthMesh = new THREE.Mesh(earthGeo, earthMat);
     earthGroup.add(earthMesh);
 
-    // 2. Translucent Orbiting Cloud Layer (64x64)
-    const cloudsGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.006, 64, 64);
+    // 2. Translucent Orbiting Cloud Layer (subtle 0.22 opacity so country borders remain crisp)
+    const cloudsGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.006, isMobile ? 36 : 64, isMobile ? 36 : 64);
     const cloudsMat = new THREE.MeshStandardMaterial({
       transparent: true,
-      opacity: 0.32,
+      opacity: 0.22,
+      depthWrite: false,
       blending: THREE.AdditiveBlending
     });
     textureLoader.load('assets/img/earth/earth_clouds.png', function(cloudsTex) {
@@ -903,8 +931,8 @@
     cloudsMesh = new THREE.Mesh(cloudsGeo, cloudsMat);
     earthGroup.add(cloudsMesh);
 
-    // 3. Multi-layer Rayleigh Atmosphere Rim Glow (64x64)
-    const atmosGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.032, 64, 64);
+    // 3. Multi-layer Rayleigh Atmosphere Rim Glow
+    const atmosGeo = new THREE.SphereGeometry(EARTH_RADIUS * 1.032, isMobile ? 36 : 64, isMobile ? 36 : 64);
     const atmosMat = new THREE.ShaderMaterial({
       vertexShader: `
         varying vec3 vNormal;
@@ -922,7 +950,8 @@
       `,
       blending: THREE.AdditiveBlending,
       side: THREE.BackSide,
-      transparent: true
+      transparent: true,
+      depthWrite: false
     });
     atmosphereMesh = new THREE.Mesh(atmosGeo, atmosMat);
     scene.add(atmosphereMesh);
@@ -930,20 +959,23 @@
     // 4. 3D Starfield
     createStarfield();
 
-    // 5. Beacons & Hitboxes
+    // 5. Geopolitical Country Boundaries (177 Sovereign Nations with real geographic borders)
+    create3DCountryBoundaries();
+
+    // 6. Beacons & Hitboxes
     beaconsGroup = new THREE.Group();
     earthGroup.add(beaconsGroup);
     rebuild3DBeacons();
 
-    // 6. 3D Investment Arcs
+    // 7. 3D Investment Arcs
     arcsGroup = new THREE.Group();
     earthGroup.add(arcsGroup);
     create3DInvestmentArcs();
 
-    // 7. Interaction Controls
+    // 8. Interaction Controls (Mouse + Mobile Touch)
     setupInteractionControls(container);
 
-    // 8. Animation Loop
+    // 9. Animation Loop
     animate();
   }
 
@@ -1207,6 +1239,8 @@
         beaconsGroup.add(holder);
       });
     }
+
+    window.__interactiveHitboxes = interactiveHitboxes;
   }
 
   /* ==========================================================================
@@ -1242,9 +1276,109 @@
   }
 
   /* ==========================================================================
-     9. Google Earth Controls (Orbit, Zoom, Inertia, Precision Click)
+     8B. Geopolitical Sovereign Country Boundaries Layer (177 Sovereign Nations)
+     ========================================================================== */
+  let countryBoundariesMesh = null;
+  let countryHighlightMesh = null;
+
+  function create3DCountryBoundaries() {
+    if (typeof window === 'undefined' || !window.WORLD_BOUNDARIES || !Array.isArray(window.WORLD_BOUNDARIES)) {
+      console.warn("World boundaries data not yet loaded.");
+      return;
+    }
+
+    const positions = [];
+    // Float slightly above Earth surface to ensure crisp line visibility with zero z-fighting
+    const radius = EARTH_RADIUS * 1.004;
+
+    window.WORLD_BOUNDARIES.forEach(function (country) {
+      if (!country.rings || !Array.isArray(country.rings)) return;
+      country.rings.forEach(function (ring) {
+        for (let i = 0; i < ring.length - 1; i++) {
+          // ring[i] is [lng, lat]
+          const p1 = latLngToVector3(ring[i][1], ring[i][0], radius);
+          const p2 = latLngToVector3(ring[i + 1][1], ring[i + 1][0], radius);
+
+          positions.push(p1.x, p1.y, p1.z);
+          positions.push(p2.x, p2.y, p2.z);
+        }
+      });
+    });
+
+    if (positions.length === 0) return;
+
+    const borderGeo = new THREE.BufferGeometry();
+    borderGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+    // Luminous, elegant cyber-geospatial boundary styling (vibrant & visible globally)
+    const borderMat = new THREE.LineBasicMaterial({
+      color: 0x5eead4, // Luminous vibrant aquamarine border outlines
+      transparent: true,
+      opacity: 0.95,
+      depthWrite: false
+    });
+
+    countryBoundariesMesh = new THREE.LineSegments(borderGeo, borderMat);
+    countryBoundariesMesh.renderOrder = 4;
+    earthGroup.add(countryBoundariesMesh);
+  }
+
+  function highlightCountryBorder(countryName) {
+    if (countryHighlightMesh && earthGroup) {
+      earthGroup.remove(countryHighlightMesh);
+      if (countryHighlightMesh.geometry) countryHighlightMesh.geometry.dispose();
+      if (countryHighlightMesh.material) countryHighlightMesh.material.dispose();
+      countryHighlightMesh = null;
+    }
+
+    if (!countryName || typeof window === 'undefined' || !window.WORLD_BOUNDARIES) return;
+
+    const target = countryName.toLowerCase().trim();
+    const match = window.WORLD_BOUNDARIES.find(function (c) {
+      const n = (c.name || '').toLowerCase();
+      const code = (c.code || '').toLowerCase();
+      return n === target ||
+             target.includes(n) ||
+             n.includes(target) ||
+             (code && target.includes(code));
+    });
+
+    if (!match || !match.rings) return;
+
+    const positions = [];
+    const radius = EARTH_RADIUS * 1.0055;
+
+    match.rings.forEach(function (ring) {
+      for (let i = 0; i < ring.length - 1; i++) {
+        const p1 = latLngToVector3(ring[i][1], ring[i][0], radius);
+        const p2 = latLngToVector3(ring[i + 1][1], ring[i + 1][0], radius);
+        positions.push(p1.x, p1.y, p1.z);
+        positions.push(p2.x, p2.y, p2.z);
+      }
+    });
+
+    if (positions.length === 0) return;
+
+    const hlGeo = new THREE.BufferGeometry();
+    hlGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+
+    const hlMat = new THREE.LineBasicMaterial({
+      color: 0x22c55e, // Vibrant Emerald Sovereign Border Glow
+      transparent: false,
+      opacity: 1.0,
+      depthWrite: false
+    });
+
+    countryHighlightMesh = new THREE.LineSegments(hlGeo, hlMat);
+    countryHighlightMesh.renderOrder = 6;
+    earthGroup.add(countryHighlightMesh);
+  }
+
+  /* ==========================================================================
+     9. Google Earth Controls (Orbit, Zoom, Inertia, Mobile Touch & Tap Picking)
      ========================================================================== */
   function setupInteractionControls(container) {
+    // Desktop Mouse Drag
     container.addEventListener('mousedown', function (e) {
       if (e.button !== 0) return;
       isDragging = true;
@@ -1285,12 +1419,25 @@
       }
     });
 
-    // Click handler with dragDistance filter & Screen-Space Precision Picking
+    // Desktop Click: Screen-Space Precision Picking + Raycaster Fallback
     container.addEventListener('click', function (e) {
-      if (dragDistance > 6) return; // Ignore drag releases!
+      if (dragDistance > 16) return;
 
-      // Screen-space Euclidean proximity picking at the exact click point
-      const hit = findPinAtScreen(e.clientX, e.clientY, 28);
+      // 1. High-precision proximity within 36px radius
+      let hit = findPinAtScreen(e.clientX, e.clientY, 36);
+
+      // 2. Direct 3D Raycasting check
+      if (!hit && raycaster && camera && interactiveHitboxes.length) {
+        const rect = container.getBoundingClientRect();
+        const normX = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        const normY = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(new THREE.Vector2(normX, normY), camera);
+        const intersects = raycaster.intersectObjects(interactiveHitboxes, false);
+        if (intersects.length > 0) {
+          hit = intersects[0].object;
+        }
+      }
+
       if (hit && hit.userData) {
         const data = hit.userData;
         if (data.type === 'unicorn' && data.unicorn) {
@@ -1309,15 +1456,18 @@
       targetCameraDistance = Math.max(110, Math.min(380, targetCameraDistance));
     }, { passive: false });
 
-    // Touch support
+    // Mobile Touch Interaction: Orbit, Pinch-Zoom & Precision Tap Picking
     let initialPinchDistance = null;
+    let touchStartTime = 0;
 
     container.addEventListener('touchstart', function (e) {
       isAutoRotating = false;
       dragDistance = 0;
       updateRotateBtnUI();
+
       if (e.touches.length === 1) {
         isDragging = true;
+        touchStartTime = Date.now();
         prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       } else if (e.touches.length === 2) {
         isDragging = false;
@@ -1333,8 +1483,8 @@
         const deltaY = e.touches[0].clientY - prevMousePos.y;
         dragDistance += Math.hypot(deltaX, deltaY);
 
-        targetRotation.y += deltaX * 0.006;
-        targetRotation.x += deltaY * 0.006;
+        targetRotation.y += deltaX * 0.0055;
+        targetRotation.x += deltaY * 0.0055;
         targetRotation.x = Math.max(-1.3, Math.min(1.3, targetRotation.x));
 
         prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -1344,13 +1494,36 @@
         const currentDistance = Math.hypot(dx, dy);
         const diff = initialPinchDistance - currentDistance;
 
-        targetCameraDistance += diff * 0.4;
+        targetCameraDistance += diff * 0.45;
         targetCameraDistance = Math.max(110, Math.min(380, targetCameraDistance));
         initialPinchDistance = currentDistance;
       }
     }, { passive: true });
 
-    container.addEventListener('touchend', function () {
+    container.addEventListener('touchend', function (e) {
+      // Precise mobile finger tap: short duration and minimal displacement
+      const touchDuration = Date.now() - touchStartTime;
+      if (dragDistance < 18 && touchDuration < 650 && e.changedTouches && e.changedTouches.length > 0) {
+        const touch = e.changedTouches[0];
+        // 42px generous finger radius for effortless mobile selection
+        const hit = findPinAtScreen(touch.clientX, touch.clientY, 42);
+        if (hit && hit.userData) {
+          const data = hit.userData;
+          if (data.type === 'unicorn' && data.unicorn) {
+            selectUnicorn(data.unicorn, true);
+          } else if (data.type === 'country' && data.country) {
+            selectCountry(data.country, true);
+          } else if (data.type === 'city_hub' && data.hub) {
+            selectCityHub(data.hub, true);
+          }
+        } else {
+          // If tapped empty space on earth and drawer is open, close drawer
+          if (drawer && drawer.classList.contains('open')) {
+            closeDetailDrawer();
+          }
+        }
+      }
+
       isDragging = false;
       initialPinchDistance = null;
     });
@@ -1393,8 +1566,8 @@
       // Verify the pinpoint is on the visible front hemisphere facing camera
       _tempNormal.copy(_tempWorldPos).normalize();
       _tempToCamera.copy(camera.position).sub(_tempWorldPos).normalize();
-      if (_tempNormal.dot(_tempToCamera) <= 0.08) {
-        continue; // Occluded by horizon or on back side of globe
+      if (_tempNormal.dot(_tempToCamera) <= 0.0) {
+        continue; // Occluded on back side of globe
       }
 
       _tempWorldPos.project(camera);
@@ -1410,6 +1583,8 @@
 
     return bestHit;
   }
+  window.__findPinAtScreen = findPinAtScreen;
+  window.__interactiveHitboxes = interactiveHitboxes;
 
   function checkBeaconHover(screenX, screenY) {
     if (!camera || !interactiveHitboxes.length) return;
@@ -1634,6 +1809,11 @@
       flyToCoordinate(unicorn.lat, unicorn.lng, 118);
     }
 
+    // Luminous country border illumination
+    if (unicorn && unicorn.country) {
+      highlightCountryBorder(unicorn.country);
+    }
+
     rebuild3DBeacons();
     openUnicornDrawer(unicorn);
   }
@@ -1646,6 +1826,11 @@
       isAutoRotating = false;
       updateRotateBtnUI();
       flyToCoordinate(country.lat, country.lng, 138);
+    }
+
+    // Luminous country border illumination
+    if (country && country.country) {
+      highlightCountryBorder(country.country);
     }
 
     rebuild3DBeacons();
@@ -1846,6 +2031,7 @@
     if (drawer) drawer.classList.remove('open');
     if (drawerBackdrop) drawerBackdrop.classList.remove('open');
     selectedEntity = null;
+    highlightCountryBorder(null);
     rebuild3DBeacons();
   }
 
@@ -1902,7 +2088,11 @@
 
       itemEl.addEventListener('click', function () {
         const found = UNICORNS_DATA.find(function (item) { return item.id === u.id; });
-        if (found) selectUnicorn(found, true);
+        if (found) {
+          selectUnicorn(found, true);
+          const sb = document.getElementById('unicornsSidebar');
+          if (sb) sb.classList.remove('mobile-open');
+        }
       });
 
       fragment.appendChild(itemEl);
@@ -1941,7 +2131,11 @@
       item.addEventListener('click', function () {
         const name = item.dataset.country;
         const found = COUNTRIES_DATA.find(function (c) { return c.country === name; });
-        if (found) selectCountry(found, true);
+        if (found) {
+          selectCountry(found, true);
+          const sb = document.getElementById('unicornsSidebar');
+          if (sb) sb.classList.remove('mobile-open');
+        }
       });
     });
   }
@@ -2074,6 +2268,23 @@
     });
   }
 
+  // Mobile Directory Bottom Sheet Controls
+  const openMobileDirBtn = document.getElementById('openMobileDirBtn');
+  const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+  const unicornsSidebar = document.getElementById('unicornsSidebar');
+
+  if (openMobileDirBtn && unicornsSidebar) {
+    openMobileDirBtn.addEventListener('click', function () {
+      unicornsSidebar.classList.add('mobile-open');
+    });
+  }
+
+  if (closeSidebarBtn && unicornsSidebar) {
+    closeSidebarBtn.addEventListener('click', function () {
+      unicornsSidebar.classList.remove('mobile-open');
+    });
+  }
+
   /* ==========================================================================
      19. Mobile Drawer & Header Scroll
      ========================================================================== */
@@ -2118,10 +2329,14 @@
   handleScroll();
 
   /* ==========================================================================
-     20. Boot
+     20. Boot (Robust Lifecycle Check)
      ========================================================================== */
-  window.addEventListener('DOMContentLoaded', function () {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      initGoogleEarth();
+    });
+  } else {
     initGoogleEarth();
-  });
+  }
 
 })();
